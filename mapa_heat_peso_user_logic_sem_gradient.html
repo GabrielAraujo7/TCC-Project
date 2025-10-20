@@ -1,0 +1,5349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_2f69c08c3385578c3d05935251f3a472 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/gh/python-visualization/folium@main/folium/templates/leaflet_heat.min.js"></script>
+</head>
+<body>
+    
+    
+<div style="
+    position: fixed; bottom: 20px; left: 20px; z-index: 9999;
+    background: rgba(255,255,255,0.95); padding: 12px 14px; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2); font-family: Arial, sans-serif; font-size: 13px;">
+  <div style="font-weight: bold; margin-bottom: 6px;">Legenda</div>
+  <div style="margin-bottom:6px;">
+    <div><b>Heatmap</b>: intensidade proporcional ao peso por classe</div>
+    <div>Classe A → 🌡️&nbsp; | &nbsp; Classe B → 🟠 &nbsp; | &nbsp; Classe C → ❄️</div>
+  </div>
+  <div style="border-top:1px solid #ddd; padding-top:6px; margin-top:6px;">
+    <div style="margin-bottom:4px;"><b>Cor do marcador</b></div>
+    
+    
+  </div>
+  <div style="margin-top:6px;color:#666;">Use o painel no topo direito para filtrar por <b>Tipo Comercial</b>.</div>
+</div>
+    
+            <div class="folium-map" id="map_2f69c08c3385578c3d05935251f3a472" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_2f69c08c3385578c3d05935251f3a472 = L.map(
+                "map_2f69c08c3385578c3d05935251f3a472",
+                {
+                    center: [-3.776390482279411, -38.53376950220588],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_19de99211c191586ed7a79b7f14225e7 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_19de99211c191586ed7a79b7f14225e7.addTo(map_2f69c08c3385578c3d05935251f3a472);
+        
+    
+            var heat_map_d9480fd8cf59cf113d8c167213513b3f = L.heatLayer(
+                [[-3.7807157, -38.6223482, 0.02], [-3.7100856, -38.5897058, 0.4], [-3.7347353, -38.6595839, 0.02], [-3.7135362, -38.5885703, 0.4], [-3.7424091, -38.4867581, 1.0], [-3.8268863, -38.46624181, 0.4], [-3.8071766, -38.555096, 0.02], [-3.77778933, -38.59964399, 0.02], [-3.71767679, -38.57899347, 0.02], [-3.77289, -38.5882422, 0.02], [-3.7548351, -38.5561623, 0.02], [-3.82635425, -38.47426069, 0.4], [-3.8185168, -38.4971878, 0.02], [-3.830081, -38.509759, 0.02], [-3.8573702, -38.5025713, 0.02], [-3.7429477, -38.5599157, 0.4], [-3.89368547, -38.51477265, 0.02], [-3.80290818, -38.49478307, 0.02], [-3.7566112, -38.6024185, 0.02], [-3.8003218, -38.5880765, 0.02], [-3.7440842, -38.4749343, 1.0], [-3.8489518, -38.51200331, 0.02], [-3.7440036, -38.5080673, 0.4], [-3.73996838, -38.53237147, 0.4], [-3.745611, -38.495747, 1.0], [-3.7049139, -38.5780082, 0.4], [-3.7216531, -38.540229, 0.02], [-3.7888981, -38.4759777, 0.02], [-3.7354447, -38.4816158, 1.0], [-3.8795207, -38.4613795, 0.4], [-3.76752651, -38.55298701, 0.4], [-3.76328481, -38.54773512, 0.4], [-3.7532492, -38.5276962, 0.4], [-3.8194034, -38.4963739, 0.02], [-3.7598094, -38.5861946, 0.02], [-3.7407932, -38.516113, 0.4], [-3.7374817, -38.5204755, 0.02], [-3.72013, -38.54911, 0.02], [-3.782635, -38.5538401, 0.02], [-3.7570117, -38.5530651, 0.02], [-3.77305558, -38.57358276, 0.4], [-3.8301305, -38.4875383, 0.02], [-3.7882169, -38.50204381, 0.4], [-3.83055313, -38.56049735, 0.02], [-3.8298586, -38.55165528, 0.02], [-3.7403104, -38.5603054, 0.4], [-3.7960364, -38.4990562, 0.4], [-3.8819005, -38.62523, 0.02], [-3.79182527, -38.5671401, 0.4], [-3.7498338, -38.5846885, 0.02], [-3.8194224, -38.4817816, 0.02], [-3.81050075, -38.57394099, 0.4], [-3.7955137, -38.4901664, 0.02], [-3.8109052, -38.6092229, 0.02], [-3.79093331, -38.53740405, 0.02], [-3.79612714, -38.49383649, 0.4], [-3.7411919, -38.4958533, 1.0], [-3.7338116, -38.5136501, 1.0], [-3.7302312, -38.568373, 0.4], [-3.787502, -38.547114, 0.02], [-3.789045, -38.5864455, 0.02], [-3.7411822, -38.5041525, 1.0], [-3.7495749, -38.5285489, 0.4], [-3.7233183, -38.5963513, 0.02], [-3.7344387, -38.4922603, 1.0], [-3.8009513, -38.586656, 0.02], [-3.7964091, -38.4936977, 0.4], [-3.7555418, -38.5303956, 0.4], [-3.7929007, -38.4796933, 0.02], [-3.8546626, -38.6021541, 0.02], [-3.70214343, -38.58428755, 0.4], [-3.832713, -38.4916446, 0.02], [-3.8165367, -38.557137, 0.4], [-3.76132708, -38.61643438, 0.02], [-3.75714249, -38.59061584, 0.02], [-3.8207176, -38.55885136, 0.02], [-3.87830719, -38.59641157, 0.02], [-3.89666198, -38.67373332, 0.02], [-3.748629, -38.5229264, 0.4], [-3.73407602, -38.49686086, 1.0], [-3.7335995, -38.5586262, 0.02], [-3.7373679, -38.4974441, 1.0], [-3.7430401, -38.4859163, 1.0], [-3.75451369, -38.48921518, 1.0], [-3.7399659, -38.5075747, 1.0], [-3.772043, -38.4828363, 1.0], [-3.7277865, -38.4862037, 1.0], [-3.7274751, -38.4937798, 1.0], [-3.7306636, -38.5131575, 1.0], [-3.7466669, -38.4966291, 0.4], [-3.7478342, -38.495109, 0.4], [-3.8622168, -38.4964175, 0.02], [-3.7855664, -38.5667333, 0.4], [-3.8214353, -38.4959061, 0.02], [-3.8098495, -38.5743582, 0.4], [-3.7550758, -38.5691635, 0.02], [-3.84944935, -38.39635577, 1.0], [-3.723756, -38.5131268, 1.0], [-3.7724462, -38.4988506, 1.0], [-3.8370287, -38.4822819, 0.02], [-3.8031077, -38.4883564, 1.0], [-3.7316219, -38.5268458, 0.02], [-3.7510005, -38.471921, 0.4], [-3.768427, -38.4936217, 1.0], [-3.7184334, -38.5959135, 0.02], [-3.7345867, -38.56610903, 0.02], [-3.77391301, -38.56794475, 0.4], [-3.80068381, -38.52989977, 0.02], [-3.7468473, -38.5559982, 0.4], [-3.7394701, -38.4895647, 1.0], [-3.90694584, -38.5743777, 0.02], [-3.7687918, -38.5566308, 0.4], [-3.7321668, -38.4886676, 0.4], [-3.7495167, -38.490536, 1.0], [-3.71469089999996, -38.5645304999999, 0.02], [-3.797637, -38.57033, 0.02], [-3.79190909999999, -38.5497507, 0.02], [-3.72505869999999, -38.5509475999999, 0.02], [-3.737422, -38.5517313, 0.02], [-3.7703181, -38.4872714, 0.02], [-3.8704983, -38.4675121, 0.4], [-3.7358277, -38.5013099, 1.0], [-3.730295, -38.512375, 1.0], [-3.746295, -38.5125923, 1.0], [-3.7429041, -38.4794315, 1.0], [-3.8322624, -38.4923427, 0.02], [-3.7929617, -38.4806392, 0.02], [-3.761929, -38.4906592, 0.02], [-3.7694439, -38.6045471, 0.02], [-3.7580958, -38.5843396, 0.02], [-3.7738473, -38.6282389, 0.02], [-3.7930876, -38.5335303, 0.02], [-3.7426267, -38.5125024, 1.0], [-3.8101342, -38.4938184, 0.02], [-3.8211125, -38.5562854, 0.02], [-3.83140920000002, -38.5605403, 0.02]],
+                {
+  "minOpacity": 0.2,
+  "maxZoom": 14,
+  "radius": 22,
+  "blur": 24,
+}
+            );
+        
+    
+            heat_map_d9480fd8cf59cf113d8c167213513b3f.addTo(map_2f69c08c3385578c3d05935251f3a472);
+        
+    
+            var feature_group_a523be76327c7726a7bba2ea817d3fbc = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_f65c897078a0039a7995996ed931f7d6 = L.marker(
+                [-3.76132708, -38.61643438],
+                {
+}
+            ).addTo(feature_group_a523be76327c7726a7bba2ea817d3fbc);
+        
+    
+            var icon_8d0385b007f2c6406f95943c2ca8f683 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f8b3965e7fe3de5f2ca4ea4ba7b8f1b5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_91c03794c94b9863f50e1145f5d3469d = $(`<div id="html_91c03794c94b9863f50e1145f5d3469d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> MATEUS - CAUCAIA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> ATACAREJO NACIONAL<br>          </div>     </div>`)[0];
+                popup_f8b3965e7fe3de5f2ca4ea4ba7b8f1b5.setContent(html_91c03794c94b9863f50e1145f5d3469d);
+            
+        
+
+        marker_f65c897078a0039a7995996ed931f7d6.bindPopup(popup_f8b3965e7fe3de5f2ca4ea4ba7b8f1b5)
+        ;
+
+        
+    
+    
+                marker_f65c897078a0039a7995996ed931f7d6.setIcon(icon_8d0385b007f2c6406f95943c2ca8f683);
+            
+    
+            var marker_0a2430fa0dea402d2463cd6b087fc9c1 = L.marker(
+                [-3.75714249, -38.59061584],
+                {
+}
+            ).addTo(feature_group_a523be76327c7726a7bba2ea817d3fbc);
+        
+    
+            var icon_e520ccdc55bc487db5e78e7fa974dd4d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_73df6fcbe1d4904be2ccb49df087043f = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_0e4fd2b8352d9f38fc13ec00a4381e39 = $(`<div id="html_0e4fd2b8352d9f38fc13ec00a4381e39" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> MATEUS - HENRIQUE JORGE<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> ATACAREJO NACIONAL<br>          </div>     </div>`)[0];
+                popup_73df6fcbe1d4904be2ccb49df087043f.setContent(html_0e4fd2b8352d9f38fc13ec00a4381e39);
+            
+        
+
+        marker_0a2430fa0dea402d2463cd6b087fc9c1.bindPopup(popup_73df6fcbe1d4904be2ccb49df087043f)
+        ;
+
+        
+    
+    
+                marker_0a2430fa0dea402d2463cd6b087fc9c1.setIcon(icon_e520ccdc55bc487db5e78e7fa974dd4d);
+            
+    
+            var marker_7be6297b027af884932c842013c971f0 = L.marker(
+                [-3.8207176, -38.55885136],
+                {
+}
+            ).addTo(feature_group_a523be76327c7726a7bba2ea817d3fbc);
+        
+    
+            var icon_a0bd5ef87ad5f3bbe363ace117afbc06 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d72565d8749604ce2983268c2957f1e7 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_6bbb8837d41e46b2e6f8b8dfc4365db2 = $(`<div id="html_6bbb8837d41e46b2e6f8b8dfc4365db2" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> MATEUS - JOSE WALTER<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> ATACAREJO NACIONAL<br>          </div>     </div>`)[0];
+                popup_d72565d8749604ce2983268c2957f1e7.setContent(html_6bbb8837d41e46b2e6f8b8dfc4365db2);
+            
+        
+
+        marker_7be6297b027af884932c842013c971f0.bindPopup(popup_d72565d8749604ce2983268c2957f1e7)
+        ;
+
+        
+    
+    
+                marker_7be6297b027af884932c842013c971f0.setIcon(icon_a0bd5ef87ad5f3bbe363ace117afbc06);
+            
+    
+            var marker_bb232c43d80129fc228bfc1557272fe3 = L.marker(
+                [-3.87830719, -38.59641157],
+                {
+}
+            ).addTo(feature_group_a523be76327c7726a7bba2ea817d3fbc);
+        
+    
+            var icon_593a538786710b8ce248a0392797e602 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ebcf554a28eafe786e5626458023ac20 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_ec344b6dbbe2f818c756fb3ce87fae5d = $(`<div id="html_ec344b6dbbe2f818c756fb3ce87fae5d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> MATEUS - MARACANAU<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> ATACAREJO NACIONAL<br>          </div>     </div>`)[0];
+                popup_ebcf554a28eafe786e5626458023ac20.setContent(html_ec344b6dbbe2f818c756fb3ce87fae5d);
+            
+        
+
+        marker_bb232c43d80129fc228bfc1557272fe3.bindPopup(popup_ebcf554a28eafe786e5626458023ac20)
+        ;
+
+        
+    
+    
+                marker_bb232c43d80129fc228bfc1557272fe3.setIcon(icon_593a538786710b8ce248a0392797e602);
+            
+    
+            var marker_3ae01a90a15a0f7dbecf7b6eb657180c = L.marker(
+                [-3.89666198, -38.67373332],
+                {
+}
+            ).addTo(feature_group_a523be76327c7726a7bba2ea817d3fbc);
+        
+    
+            var icon_5d2d23e9fc78aea6694fb817095f46fb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_643858f5f7a898c2a898fc313ddde35b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_cdc0372def66479c8e17c08967213403 = $(`<div id="html_cdc0372def66479c8e17c08967213403" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> MATEUS - MARANGUAPE<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> ATACAREJO NACIONAL<br>          </div>     </div>`)[0];
+                popup_643858f5f7a898c2a898fc313ddde35b.setContent(html_cdc0372def66479c8e17c08967213403);
+            
+        
+
+        marker_3ae01a90a15a0f7dbecf7b6eb657180c.bindPopup(popup_643858f5f7a898c2a898fc313ddde35b)
+        ;
+
+        
+    
+    
+                marker_3ae01a90a15a0f7dbecf7b6eb657180c.setIcon(icon_5d2d23e9fc78aea6694fb817095f46fb);
+            
+    
+            var feature_group_5601b4f0caff17afbcf466fe7c2103d0 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_cde1026475c7c260da7a66f1543e3929 = L.marker(
+                [-3.7807157, -38.6223482],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_356cd2867c18aac2ced0bf768f08e0e2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4d80862296a7eedb0e10443e491e92e2 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2f9d09a5a0006dd3fc458353d07ac90e = $(`<div id="html_2f9d09a5a0006dd3fc458353d07ac90e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - ATACAREJO<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_4d80862296a7eedb0e10443e491e92e2.setContent(html_2f9d09a5a0006dd3fc458353d07ac90e);
+            
+        
+
+        marker_cde1026475c7c260da7a66f1543e3929.bindPopup(popup_4d80862296a7eedb0e10443e491e92e2)
+        ;
+
+        
+    
+    
+                marker_cde1026475c7c260da7a66f1543e3929.setIcon(icon_356cd2867c18aac2ced0bf768f08e0e2);
+            
+    
+            var marker_4e9d93686561cead9d84acb00b1d25d3 = L.marker(
+                [-3.7100856, -38.5897058],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_b45e9ab83a97124e753e033408aa1ae2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6addcbad840ebea5b7985979d00323d1 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_0fb7ee021801c35917005e775dce59e5 = $(`<div id="html_0fb7ee021801c35917005e775dce59e5" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - BARRA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_6addcbad840ebea5b7985979d00323d1.setContent(html_0fb7ee021801c35917005e775dce59e5);
+            
+        
+
+        marker_4e9d93686561cead9d84acb00b1d25d3.bindPopup(popup_6addcbad840ebea5b7985979d00323d1)
+        ;
+
+        
+    
+    
+                marker_4e9d93686561cead9d84acb00b1d25d3.setIcon(icon_b45e9ab83a97124e753e033408aa1ae2);
+            
+    
+            var marker_7cbb337d44234eea290c0eb5058ddb27 = L.marker(
+                [-3.7347353, -38.6595839],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_e36c8c8d9237e772bd6b96f9ba2d7cfd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_22d4942f0d7c4c0aaf5300eb0664ec70 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_4376377f69caa2f2ae56f3ebe3973597 = $(`<div id="html_4376377f69caa2f2ae56f3ebe3973597" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - CAUCAIA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_22d4942f0d7c4c0aaf5300eb0664ec70.setContent(html_4376377f69caa2f2ae56f3ebe3973597);
+            
+        
+
+        marker_7cbb337d44234eea290c0eb5058ddb27.bindPopup(popup_22d4942f0d7c4c0aaf5300eb0664ec70)
+        ;
+
+        
+    
+    
+                marker_7cbb337d44234eea290c0eb5058ddb27.setIcon(icon_e36c8c8d9237e772bd6b96f9ba2d7cfd);
+            
+    
+            var marker_8d713360e3121a1594159163892f89d0 = L.marker(
+                [-3.7135362, -38.5885703],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_1ab90e65b215102b30716f252e0bef9b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0b8dad33c2e6b40071f084f809df8997 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_f898d2ce848e80ab0972460ea3d69c27 = $(`<div id="html_f898d2ce848e80ab0972460ea3d69c27" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - CEL CARVALHO<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_0b8dad33c2e6b40071f084f809df8997.setContent(html_f898d2ce848e80ab0972460ea3d69c27);
+            
+        
+
+        marker_8d713360e3121a1594159163892f89d0.bindPopup(popup_0b8dad33c2e6b40071f084f809df8997)
+        ;
+
+        
+    
+    
+                marker_8d713360e3121a1594159163892f89d0.setIcon(icon_1ab90e65b215102b30716f252e0bef9b);
+            
+    
+            var marker_c1a39f632c7411523b6658bb61244493 = L.marker(
+                [-3.7424091, -38.4867581],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_ae54c4621bf23edaa01f85c5ae519235 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_96ce87dc59efc7777b7b68efe1453972 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_03cd9b74b8a0a992e51441c0184aafb2 = $(`<div id="html_03cd9b74b8a0a992e51441c0184aafb2" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - CONCEITO<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_96ce87dc59efc7777b7b68efe1453972.setContent(html_03cd9b74b8a0a992e51441c0184aafb2);
+            
+        
+
+        marker_c1a39f632c7411523b6658bb61244493.bindPopup(popup_96ce87dc59efc7777b7b68efe1453972)
+        ;
+
+        
+    
+    
+                marker_c1a39f632c7411523b6658bb61244493.setIcon(icon_ae54c4621bf23edaa01f85c5ae519235);
+            
+    
+            var marker_b7fe9ef2e4b01ba3a65348ad8f2eecbc = L.marker(
+                [-3.8268863, -38.46624181],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_5174419e28c1143c21578aad9ce139d8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1e7c2266d0bde84bc6a9995b1395b5fe = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_69f3bd6f9349a6bf1879cff8a8ff9546 = $(`<div id="html_69f3bd6f9349a6bf1879cff8a8ff9546" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - CURIO<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_1e7c2266d0bde84bc6a9995b1395b5fe.setContent(html_69f3bd6f9349a6bf1879cff8a8ff9546);
+            
+        
+
+        marker_b7fe9ef2e4b01ba3a65348ad8f2eecbc.bindPopup(popup_1e7c2266d0bde84bc6a9995b1395b5fe)
+        ;
+
+        
+    
+    
+                marker_b7fe9ef2e4b01ba3a65348ad8f2eecbc.setIcon(icon_5174419e28c1143c21578aad9ce139d8);
+            
+    
+            var marker_6baacbceb0f349a275310095e9beed13 = L.marker(
+                [-3.8071766, -38.555096],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_d7f92911774455a2277a0fb76711e0a5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_14f3780766b2c8992ae7dd01f34d5bf8 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a73b7d6602fbfa31cf62a14d54c5c5f2 = $(`<div id="html_a73b7d6602fbfa31cf62a14d54c5c5f2" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - EXPEDICIONARIO<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_14f3780766b2c8992ae7dd01f34d5bf8.setContent(html_a73b7d6602fbfa31cf62a14d54c5c5f2);
+            
+        
+
+        marker_6baacbceb0f349a275310095e9beed13.bindPopup(popup_14f3780766b2c8992ae7dd01f34d5bf8)
+        ;
+
+        
+    
+    
+                marker_6baacbceb0f349a275310095e9beed13.setIcon(icon_d7f92911774455a2277a0fb76711e0a5);
+            
+    
+            var marker_0f722f95f36af7d8f0fac3fbb90d721f = L.marker(
+                [-3.77778933, -38.59964399],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_4cc1b709158c2113e5277ba33e71c4cc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_fdea0b336f2b28db1e895258f74c8827 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_4af8f2c00865af457408feffe4a0ae32 = $(`<div id="html_4af8f2c00865af457408feffe4a0ae32" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - GRANJA PORTUGAL<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_fdea0b336f2b28db1e895258f74c8827.setContent(html_4af8f2c00865af457408feffe4a0ae32);
+            
+        
+
+        marker_0f722f95f36af7d8f0fac3fbb90d721f.bindPopup(popup_fdea0b336f2b28db1e895258f74c8827)
+        ;
+
+        
+    
+    
+                marker_0f722f95f36af7d8f0fac3fbb90d721f.setIcon(icon_4cc1b709158c2113e5277ba33e71c4cc);
+            
+    
+            var marker_84c52704743f7ba2c43e4d22659cfc3e = L.marker(
+                [-3.71767679, -38.57899347],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_3a32161f815478f0b5b5af2d75309251 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_70e10c320a32c18875c3cddf5d3888aa = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_72995c3a332b99512206f06aeaa718b6 = $(`<div id="html_72995c3a332b99512206f06aeaa718b6" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - JD IRACEMA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_70e10c320a32c18875c3cddf5d3888aa.setContent(html_72995c3a332b99512206f06aeaa718b6);
+            
+        
+
+        marker_84c52704743f7ba2c43e4d22659cfc3e.bindPopup(popup_70e10c320a32c18875c3cddf5d3888aa)
+        ;
+
+        
+    
+    
+                marker_84c52704743f7ba2c43e4d22659cfc3e.setIcon(icon_3a32161f815478f0b5b5af2d75309251);
+            
+    
+            var marker_64f39f13e2dd2a5ecf6f8cd562500319 = L.marker(
+                [-3.77289, -38.5882422],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_d7851aed092e65bc9c803e80dd4c18da = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_497eb78fcaad070d34bf6f06ecd6262f = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_81d5aaa51257254a5e652b469c91c9dc = $(`<div id="html_81d5aaa51257254a5e652b469c91c9dc" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - JOAO XXIII<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_497eb78fcaad070d34bf6f06ecd6262f.setContent(html_81d5aaa51257254a5e652b469c91c9dc);
+            
+        
+
+        marker_64f39f13e2dd2a5ecf6f8cd562500319.bindPopup(popup_497eb78fcaad070d34bf6f06ecd6262f)
+        ;
+
+        
+    
+    
+                marker_64f39f13e2dd2a5ecf6f8cd562500319.setIcon(icon_d7851aed092e65bc9c803e80dd4c18da);
+            
+    
+            var marker_8d1c61476a3343614e9f32aadb853ea0 = L.marker(
+                [-3.7548351, -38.5561623],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_7d5dbb6dbcf2de7e20e71953c3488a55 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_23a5e38ab2ee2284c0cabf126f4373b1 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_224d820192c1d4c0b40569d5af1d8b9c = $(`<div id="html_224d820192c1d4c0b40569d5af1d8b9c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - JOSE BASTOS<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_23a5e38ab2ee2284c0cabf126f4373b1.setContent(html_224d820192c1d4c0b40569d5af1d8b9c);
+            
+        
+
+        marker_8d1c61476a3343614e9f32aadb853ea0.bindPopup(popup_23a5e38ab2ee2284c0cabf126f4373b1)
+        ;
+
+        
+    
+    
+                marker_8d1c61476a3343614e9f32aadb853ea0.setIcon(icon_7d5dbb6dbcf2de7e20e71953c3488a55);
+            
+    
+            var marker_88c75fa6de420cb3a22fd32ade3219d4 = L.marker(
+                [-3.82635425, -38.47426069],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_296c3a3d24b6b9ec4c00995d5d474670 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1400bcdffcf178d9342fe651ba6cada4 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_85e9f222179d25e20c1c448def9dba0c = $(`<div id="html_85e9f222179d25e20c1c448def9dba0c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - LAGOA REDONDA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_1400bcdffcf178d9342fe651ba6cada4.setContent(html_85e9f222179d25e20c1c448def9dba0c);
+            
+        
+
+        marker_88c75fa6de420cb3a22fd32ade3219d4.bindPopup(popup_1400bcdffcf178d9342fe651ba6cada4)
+        ;
+
+        
+    
+    
+                marker_88c75fa6de420cb3a22fd32ade3219d4.setIcon(icon_296c3a3d24b6b9ec4c00995d5d474670);
+            
+    
+            var marker_1c8d852dedfc8fc8e19de040002f63a8 = L.marker(
+                [-3.8185168, -38.4971878],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_7be4433fe2cd1b0ba7ed6ecdcb5893ef = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e10462cdfbe26b1eb3a4030df4e87f0e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_f20350355e1d5fc2d13a4ed9133ee7bc = $(`<div id="html_f20350355e1d5fc2d13a4ed9133ee7bc" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - MESSEJANA - LJ 01<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_e10462cdfbe26b1eb3a4030df4e87f0e.setContent(html_f20350355e1d5fc2d13a4ed9133ee7bc);
+            
+        
+
+        marker_1c8d852dedfc8fc8e19de040002f63a8.bindPopup(popup_e10462cdfbe26b1eb3a4030df4e87f0e)
+        ;
+
+        
+    
+    
+                marker_1c8d852dedfc8fc8e19de040002f63a8.setIcon(icon_7be4433fe2cd1b0ba7ed6ecdcb5893ef);
+            
+    
+            var marker_c3d188ef3b22a5c07f5c18b9b545d9b7 = L.marker(
+                [-3.830081, -38.509759],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_cae635abcad2ac97136f5d4eab37516f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4157d53d2f234eb7132876c1b28a3ea8 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_837ce1f8f57d9ad3e51699d54ba69455 = $(`<div id="html_837ce1f8f57d9ad3e51699d54ba69455" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - MESSEJANA - LJ 02<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_4157d53d2f234eb7132876c1b28a3ea8.setContent(html_837ce1f8f57d9ad3e51699d54ba69455);
+            
+        
+
+        marker_c3d188ef3b22a5c07f5c18b9b545d9b7.bindPopup(popup_4157d53d2f234eb7132876c1b28a3ea8)
+        ;
+
+        
+    
+    
+                marker_c3d188ef3b22a5c07f5c18b9b545d9b7.setIcon(icon_cae635abcad2ac97136f5d4eab37516f);
+            
+    
+            var marker_223fe6231a5ae568d7489ef3042637b3 = L.marker(
+                [-3.8573702, -38.5025713],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_be1bb9d2ce83981c1454574905fe1bad = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d7d6850a507ae3aa8752bfb3029260f4 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a9e496e627cf9289076a1143198bca3b = $(`<div id="html_a9e496e627cf9289076a1143198bca3b" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - PARQUE SANTA MARIA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_d7d6850a507ae3aa8752bfb3029260f4.setContent(html_a9e496e627cf9289076a1143198bca3b);
+            
+        
+
+        marker_223fe6231a5ae568d7489ef3042637b3.bindPopup(popup_d7d6850a507ae3aa8752bfb3029260f4)
+        ;
+
+        
+    
+    
+                marker_223fe6231a5ae568d7489ef3042637b3.setIcon(icon_be1bb9d2ce83981c1454574905fe1bad);
+            
+    
+            var marker_9e55f07a4d993cc87a8e9c1e9a2c3e09 = L.marker(
+                [-3.7429477, -38.5599157],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_db975a96a685c822a3d4a90ce3ff95c4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_39ae15695f926416dd402fd8daa10db0 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_c8a31057d9c56aa653b0aeb3715f1a00 = $(`<div id="html_c8a31057d9c56aa653b0aeb3715f1a00" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - PARQUELANDIA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_39ae15695f926416dd402fd8daa10db0.setContent(html_c8a31057d9c56aa653b0aeb3715f1a00);
+            
+        
+
+        marker_9e55f07a4d993cc87a8e9c1e9a2c3e09.bindPopup(popup_39ae15695f926416dd402fd8daa10db0)
+        ;
+
+        
+    
+    
+                marker_9e55f07a4d993cc87a8e9c1e9a2c3e09.setIcon(icon_db975a96a685c822a3d4a90ce3ff95c4);
+            
+    
+            var marker_2bb9f925d78e61abffbf7357ccdaa625 = L.marker(
+                [-3.89368547, -38.51477265],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_04a0782af43cea1ea7dafd3511dd8ad3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2318433f773c22fa7134d77843e90f8c = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5df585d730ea9ab08a3d63e04d81dd0e = $(`<div id="html_5df585d730ea9ab08a3d63e04d81dd0e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - PEDRAS<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_2318433f773c22fa7134d77843e90f8c.setContent(html_5df585d730ea9ab08a3d63e04d81dd0e);
+            
+        
+
+        marker_2bb9f925d78e61abffbf7357ccdaa625.bindPopup(popup_2318433f773c22fa7134d77843e90f8c)
+        ;
+
+        
+    
+    
+                marker_2bb9f925d78e61abffbf7357ccdaa625.setIcon(icon_04a0782af43cea1ea7dafd3511dd8ad3);
+            
+    
+            var marker_912eda3228539d1889ef90776abb1106 = L.marker(
+                [-3.80290818, -38.49478307],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_e547da8fd7ac144587bdd179084cba4f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_62be0667f290530719335377d35898ac = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a65329de4c8dfe42895c68f2e324d7a7 = $(`<div id="html_a65329de4c8dfe42895c68f2e324d7a7" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - PRQ DEL SOL<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_62be0667f290530719335377d35898ac.setContent(html_a65329de4c8dfe42895c68f2e324d7a7);
+            
+        
+
+        marker_912eda3228539d1889ef90776abb1106.bindPopup(popup_62be0667f290530719335377d35898ac)
+        ;
+
+        
+    
+    
+                marker_912eda3228539d1889ef90776abb1106.setIcon(icon_e547da8fd7ac144587bdd179084cba4f);
+            
+    
+            var marker_d33ab96df30bbe7f4b8cf6826467cf59 = L.marker(
+                [-3.7566112, -38.6024185],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_2949b05c0a4e6154fbd0ba952b8ec3c7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6c1d829e32b2dede27046acfcfc639b6 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_6d8966b9b7d9f3bdbe3b17f50f2b1092 = $(`<div id="html_6d8966b9b7d9f3bdbe3b17f50f2b1092" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - PRQ GENIBAU<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_6c1d829e32b2dede27046acfcfc639b6.setContent(html_6d8966b9b7d9f3bdbe3b17f50f2b1092);
+            
+        
+
+        marker_d33ab96df30bbe7f4b8cf6826467cf59.bindPopup(popup_6c1d829e32b2dede27046acfcfc639b6)
+        ;
+
+        
+    
+    
+                marker_d33ab96df30bbe7f4b8cf6826467cf59.setIcon(icon_2949b05c0a4e6154fbd0ba952b8ec3c7);
+            
+    
+            var marker_16c41098f21a77af12e30ad67ed83f4c = L.marker(
+                [-3.8003218, -38.5880765],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_122a31e9e2ced6dcfb5db0083b2f4c52 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_48a8b92fd83d5a96676dad97a9e89577 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_8bd5e5585865a85cc8745d72eb252b31 = $(`<div id="html_8bd5e5585865a85cc8745d72eb252b31" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - PRQ SAO JOSE<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_48a8b92fd83d5a96676dad97a9e89577.setContent(html_8bd5e5585865a85cc8745d72eb252b31);
+            
+        
+
+        marker_16c41098f21a77af12e30ad67ed83f4c.bindPopup(popup_48a8b92fd83d5a96676dad97a9e89577)
+        ;
+
+        
+    
+    
+                marker_16c41098f21a77af12e30ad67ed83f4c.setIcon(icon_122a31e9e2ced6dcfb5db0083b2f4c52);
+            
+    
+            var marker_5182935d4124bc65fbac869fb7e78301 = L.marker(
+                [-3.7440842, -38.4749343],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_7b518418423a5fd48944681790ea0a7c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_85154b63bfb10fa21acd988f8aba1418 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_fc230d16cc68cd056a1294d094d1bedb = $(`<div id="html_fc230d16cc68cd056a1294d094d1bedb" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - SANTOS DUMONT<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_85154b63bfb10fa21acd988f8aba1418.setContent(html_fc230d16cc68cd056a1294d094d1bedb);
+            
+        
+
+        marker_5182935d4124bc65fbac869fb7e78301.bindPopup(popup_85154b63bfb10fa21acd988f8aba1418)
+        ;
+
+        
+    
+    
+                marker_5182935d4124bc65fbac869fb7e78301.setIcon(icon_7b518418423a5fd48944681790ea0a7c);
+            
+    
+            var marker_59538ad1a43049f1d00969a9d9306fd6 = L.marker(
+                [-3.8489518, -38.51200331],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_d86cf5926fcbf719d290da8bc1cfbd35 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_04ebd21b45d8e20624b0c55bc500046e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_f327e3eeefd0a0c9bb2940dd0db2d071 = $(`<div id="html_f327e3eeefd0a0c9bb2940dd0db2d071" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - VALPARAISO<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_04ebd21b45d8e20624b0c55bc500046e.setContent(html_f327e3eeefd0a0c9bb2940dd0db2d071);
+            
+        
+
+        marker_59538ad1a43049f1d00969a9d9306fd6.bindPopup(popup_04ebd21b45d8e20624b0c55bc500046e)
+        ;
+
+        
+    
+    
+                marker_59538ad1a43049f1d00969a9d9306fd6.setIcon(icon_d86cf5926fcbf719d290da8bc1cfbd35);
+            
+    
+            var marker_e1a71a96bc965642d6a10b998056b60e = L.marker(
+                [-3.70214343, -38.58428755],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_a8579d2eef7077330882f47c08147550 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5c244db02d0e6f390e21ae320214938b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_355a6c9652d0b9726766a1a4c76b3178 = $(`<div id="html_355a6c9652d0b9726766a1a4c76b3178" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> LAG - BARRA DO CEARA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_5c244db02d0e6f390e21ae320214938b.setContent(html_355a6c9652d0b9726766a1a4c76b3178);
+            
+        
+
+        marker_e1a71a96bc965642d6a10b998056b60e.bindPopup(popup_5c244db02d0e6f390e21ae320214938b)
+        ;
+
+        
+    
+    
+                marker_e1a71a96bc965642d6a10b998056b60e.setIcon(icon_a8579d2eef7077330882f47c08147550);
+            
+    
+            var marker_f2bac7ff320d081985db89e0da66c220 = L.marker(
+                [-3.832713, -38.4916446],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_1191520de0a0bbc1f0c28582593db016 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_be2fbaeef6c9d31a3482974ee4ccde8b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2a508dee4bb37c1d3ad53395af18f7d9 = $(`<div id="html_2a508dee4bb37c1d3ad53395af18f7d9" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> LAG - MESSEJANA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_be2fbaeef6c9d31a3482974ee4ccde8b.setContent(html_2a508dee4bb37c1d3ad53395af18f7d9);
+            
+        
+
+        marker_f2bac7ff320d081985db89e0da66c220.bindPopup(popup_be2fbaeef6c9d31a3482974ee4ccde8b)
+        ;
+
+        
+    
+    
+                marker_f2bac7ff320d081985db89e0da66c220.setIcon(icon_1191520de0a0bbc1f0c28582593db016);
+            
+    
+            var marker_c68b511c854b7d72d1c950c52d0377f7 = L.marker(
+                [-3.8165367, -38.557137],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_dd5bdb2f743df9ace25c67b88e738011 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_01ec5b06e5f70034ee0baa58abb95c1b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_01231fc2ef2d328aef15afc249b11075 = $(`<div id="html_01231fc2ef2d328aef15afc249b11075" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> LAG - MONDUBIM<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_01ec5b06e5f70034ee0baa58abb95c1b.setContent(html_01231fc2ef2d328aef15afc249b11075);
+            
+        
+
+        marker_c68b511c854b7d72d1c950c52d0377f7.bindPopup(popup_01ec5b06e5f70034ee0baa58abb95c1b)
+        ;
+
+        
+    
+    
+                marker_c68b511c854b7d72d1c950c52d0377f7.setIcon(icon_dd5bdb2f743df9ace25c67b88e738011);
+            
+    
+            var marker_8ffbb49044e3305a4f09363d0fab6804 = L.marker(
+                [-3.7478342, -38.495109],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_b4a9279196ced72ccbbd7b452cabe199 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_82a13366788c3bd4a457be985ebf6777 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_bec5023991e01a07c83db78e209b10a0 = $(`<div id="html_bec5023991e01a07c83db78e209b10a0" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - ANTONIO SALES<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_82a13366788c3bd4a457be985ebf6777.setContent(html_bec5023991e01a07c83db78e209b10a0);
+            
+        
+
+        marker_8ffbb49044e3305a4f09363d0fab6804.bindPopup(popup_82a13366788c3bd4a457be985ebf6777)
+        ;
+
+        
+    
+    
+                marker_8ffbb49044e3305a4f09363d0fab6804.setIcon(icon_b4a9279196ced72ccbbd7b452cabe199);
+            
+    
+            var marker_192355fbd7e58aa185e57e62297e31f0 = L.marker(
+                [-3.8622168, -38.4964175],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_adb4abab9c76fb16e8929f3ce40493a4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a0f5b2b3bb0a57d0167af60897419b74 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_01289cdb1ae8bad8fc5d1c30d4ca419b = $(`<div id="html_01289cdb1ae8bad8fc5d1c30d4ca419b" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - AQUIRAZ<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_a0f5b2b3bb0a57d0167af60897419b74.setContent(html_01289cdb1ae8bad8fc5d1c30d4ca419b);
+            
+        
+
+        marker_192355fbd7e58aa185e57e62297e31f0.bindPopup(popup_a0f5b2b3bb0a57d0167af60897419b74)
+        ;
+
+        
+    
+    
+                marker_192355fbd7e58aa185e57e62297e31f0.setIcon(icon_adb4abab9c76fb16e8929f3ce40493a4);
+            
+    
+            var marker_f0544fe44d9d88602efca7c2fee211c6 = L.marker(
+                [-3.7855664, -38.5667333],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_3febdbeb6448c80ff1ed6782b557c130 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b4b28982b4cece1d1c13e0541c3bc84c = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_b80c26258462d350d6681acfe0f87282 = $(`<div id="html_b80c26258462d350d6681acfe0f87282" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - MARAPONGA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_b4b28982b4cece1d1c13e0541c3bc84c.setContent(html_b80c26258462d350d6681acfe0f87282);
+            
+        
+
+        marker_f0544fe44d9d88602efca7c2fee211c6.bindPopup(popup_b4b28982b4cece1d1c13e0541c3bc84c)
+        ;
+
+        
+    
+    
+                marker_f0544fe44d9d88602efca7c2fee211c6.setIcon(icon_3febdbeb6448c80ff1ed6782b557c130);
+            
+    
+            var marker_82e82abfe633959011bd4e5d1cf188d7 = L.marker(
+                [-3.8214353, -38.4959061],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_0d3ae49319d40bfd59363142509f0909 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e570f7e355696137e691154ba497e5b5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_72c4b3c0850eb87e671ffd2c3a868441 = $(`<div id="html_72c4b3c0850eb87e671ffd2c3a868441" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - MESSEJANA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_e570f7e355696137e691154ba497e5b5.setContent(html_72c4b3c0850eb87e671ffd2c3a868441);
+            
+        
+
+        marker_82e82abfe633959011bd4e5d1cf188d7.bindPopup(popup_e570f7e355696137e691154ba497e5b5)
+        ;
+
+        
+    
+    
+                marker_82e82abfe633959011bd4e5d1cf188d7.setIcon(icon_0d3ae49319d40bfd59363142509f0909);
+            
+    
+            var marker_7c5c2e5719bb7194bf5bc00bce4f9a53 = L.marker(
+                [-3.8098495, -38.5743582],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_9fa490ce2f6016249620ccfff48e03dc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3f7fb8680a5298071fbebe523dc2d808 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_38cd845ed631c357131cd863ee6b0d1c = $(`<div id="html_38cd845ed631c357131cd863ee6b0d1c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - MONDUBIM<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_3f7fb8680a5298071fbebe523dc2d808.setContent(html_38cd845ed631c357131cd863ee6b0d1c);
+            
+        
+
+        marker_7c5c2e5719bb7194bf5bc00bce4f9a53.bindPopup(popup_3f7fb8680a5298071fbebe523dc2d808)
+        ;
+
+        
+    
+    
+                marker_7c5c2e5719bb7194bf5bc00bce4f9a53.setIcon(icon_9fa490ce2f6016249620ccfff48e03dc);
+            
+    
+            var marker_13b54ef1f0b52038d4f92c3e51fb7a23 = L.marker(
+                [-3.7550758, -38.5691635],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_5922ade2668d19de87cbd223fc3a4be1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_30b26e143b7e92debecde6701f942702 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_ae46e715cf24e76db3c626bf74356a4c = $(`<div id="html_ae46e715cf24e76db3c626bf74356a4c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - PANAMERICANO<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_30b26e143b7e92debecde6701f942702.setContent(html_ae46e715cf24e76db3c626bf74356a4c);
+            
+        
+
+        marker_13b54ef1f0b52038d4f92c3e51fb7a23.bindPopup(popup_30b26e143b7e92debecde6701f942702)
+        ;
+
+        
+    
+    
+                marker_13b54ef1f0b52038d4f92c3e51fb7a23.setIcon(icon_5922ade2668d19de87cbd223fc3a4be1);
+            
+    
+            var marker_5a973b0e0e60924fff2776a48b52ce50 = L.marker(
+                [-3.84944935, -38.39635577],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_f812f8dfe6e83f9ac5527b115c861074 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_44a3ff469c1087ac4c4350da8d396895 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2bd67f31702a5356cf2f2964b8f37212 = $(`<div id="html_2bd67f31702a5356cf2f2964b8f37212" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - PORTO DAS DUNAS<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_44a3ff469c1087ac4c4350da8d396895.setContent(html_2bd67f31702a5356cf2f2964b8f37212);
+            
+        
+
+        marker_5a973b0e0e60924fff2776a48b52ce50.bindPopup(popup_44a3ff469c1087ac4c4350da8d396895)
+        ;
+
+        
+    
+    
+                marker_5a973b0e0e60924fff2776a48b52ce50.setIcon(icon_f812f8dfe6e83f9ac5527b115c861074);
+            
+    
+            var marker_6a309857692101eb378701a80c47c7ad = L.marker(
+                [-3.723756, -38.5131268],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_0347a054f08e08c5ce323d9d520e6789 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e8cd0e97c5dbd22dfcc351771d618462 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_00548988a938882996e566424c848e89 = $(`<div id="html_00548988a938882996e566424c848e89" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - PRAIA DE IRACEMA<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_e8cd0e97c5dbd22dfcc351771d618462.setContent(html_00548988a938882996e566424c848e89);
+            
+        
+
+        marker_6a309857692101eb378701a80c47c7ad.bindPopup(popup_e8cd0e97c5dbd22dfcc351771d618462)
+        ;
+
+        
+    
+    
+                marker_6a309857692101eb378701a80c47c7ad.setIcon(icon_0347a054f08e08c5ce323d9d520e6789);
+            
+    
+            var marker_86f1af82ba5098bd4452bf2f8d3a53e8 = L.marker(
+                [-3.7724462, -38.4988506],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_adcf84dc42ac9c9361788f170b39fab6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3dc556556a5ae54e9852d12c5e6f1181 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_50a1ba69bb937b79595c6a5ebeea1e33 = $(`<div id="html_50a1ba69bb937b79595c6a5ebeea1e33" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - ROGACIANO LEITE<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_3dc556556a5ae54e9852d12c5e6f1181.setContent(html_50a1ba69bb937b79595c6a5ebeea1e33);
+            
+        
+
+        marker_86f1af82ba5098bd4452bf2f8d3a53e8.bindPopup(popup_3dc556556a5ae54e9852d12c5e6f1181)
+        ;
+
+        
+    
+    
+                marker_86f1af82ba5098bd4452bf2f8d3a53e8.setIcon(icon_adcf84dc42ac9c9361788f170b39fab6);
+            
+    
+            var marker_c90f89be0128e8e0528d4ff960deeb7b = L.marker(
+                [-3.8370287, -38.4822819],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_b87bdfb1567d78fb6a97d92f3a752263 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b9e7e98f9d9d18699df9b07e05c989e5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_049fa3f5a7ad8f389cfb820e1035674f = $(`<div id="html_049fa3f5a7ad8f389cfb820e1035674f" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PINHEIRO - WASHINGTON SOARES<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_b9e7e98f9d9d18699df9b07e05c989e5.setContent(html_049fa3f5a7ad8f389cfb820e1035674f);
+            
+        
+
+        marker_c90f89be0128e8e0528d4ff960deeb7b.bindPopup(popup_b9e7e98f9d9d18699df9b07e05c989e5)
+        ;
+
+        
+    
+    
+                marker_c90f89be0128e8e0528d4ff960deeb7b.setIcon(icon_b87bdfb1567d78fb6a97d92f3a752263);
+            
+    
+            var marker_9e5201740f02eeb6554d256503ba9b7f = L.marker(
+                [-3.8031077, -38.4883564],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_dc70c3309c9198f4bd934a470f89917b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0581aece7cdae1a06bb8430e7fedb0a0 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_39f6a4816b1ccc2a5c809df119f579af = $(`<div id="html_39f6a4816b1ccc2a5c809df119f579af" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - CAMBEBA<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_0581aece7cdae1a06bb8430e7fedb0a0.setContent(html_39f6a4816b1ccc2a5c809df119f579af);
+            
+        
+
+        marker_9e5201740f02eeb6554d256503ba9b7f.bindPopup(popup_0581aece7cdae1a06bb8430e7fedb0a0)
+        ;
+
+        
+    
+    
+                marker_9e5201740f02eeb6554d256503ba9b7f.setIcon(icon_dc70c3309c9198f4bd934a470f89917b);
+            
+    
+            var marker_9f654b256f1aa815519d293de6222fad = L.marker(
+                [-3.7316219, -38.5268458],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_5a17e699aa5ba85feaf412ab1443f172 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9c2054dec05c82798a1a4207ea6ebb68 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_0a5fb2284056d68c22abef8d5e6c7998 = $(`<div id="html_0a5fb2284056d68c22abef8d5e6c7998" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - CENTRO<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_9c2054dec05c82798a1a4207ea6ebb68.setContent(html_0a5fb2284056d68c22abef8d5e6c7998);
+            
+        
+
+        marker_9f654b256f1aa815519d293de6222fad.bindPopup(popup_9c2054dec05c82798a1a4207ea6ebb68)
+        ;
+
+        
+    
+    
+                marker_9f654b256f1aa815519d293de6222fad.setIcon(icon_5a17e699aa5ba85feaf412ab1443f172);
+            
+    
+            var marker_1b74bf5a110c6c7aafd04a2ec192d34e = L.marker(
+                [-3.7510005, -38.471921],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_c5d26800ce50314699760040c4d22a6d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_671f7ea7e058682f1b02d60ddd33701d = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_0c0547ca30c3f31d44726ab82bf297e9 = $(`<div id="html_0c0547ca30c3f31d44726ab82bf297e9" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - CIDADE 2000<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_671f7ea7e058682f1b02d60ddd33701d.setContent(html_0c0547ca30c3f31d44726ab82bf297e9);
+            
+        
+
+        marker_1b74bf5a110c6c7aafd04a2ec192d34e.bindPopup(popup_671f7ea7e058682f1b02d60ddd33701d)
+        ;
+
+        
+    
+    
+                marker_1b74bf5a110c6c7aafd04a2ec192d34e.setIcon(icon_c5d26800ce50314699760040c4d22a6d);
+            
+    
+            var marker_4c50b641082991d564bde7a9c73686e4 = L.marker(
+                [-3.768427, -38.4936217],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_689a65a6586a4c048931dccc4698bc0b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_117a5d859ffd3e5aab05d20912e4329b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_32dbe9bfc4aa47ca0c4cfe7f791d5f84 = $(`<div id="html_32dbe9bfc4aa47ca0c4cfe7f791d5f84" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - LUCIANO CAVALCANTE<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_117a5d859ffd3e5aab05d20912e4329b.setContent(html_32dbe9bfc4aa47ca0c4cfe7f791d5f84);
+            
+        
+
+        marker_4c50b641082991d564bde7a9c73686e4.bindPopup(popup_117a5d859ffd3e5aab05d20912e4329b)
+        ;
+
+        
+    
+    
+                marker_4c50b641082991d564bde7a9c73686e4.setIcon(icon_689a65a6586a4c048931dccc4698bc0b);
+            
+    
+            var marker_e92964656bf02ed14f046c58fdc2ba64 = L.marker(
+                [-3.7184334, -38.5959135],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_d154d845ba5deb05ff407b07c746c4dd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bec2bed2231b4044a6e47570a75b7d53 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5ece4a75aecb929cd3eb4cec2f548413 = $(`<div id="html_5ece4a75aecb929cd3eb4cec2f548413" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - MOZART LUCENA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_bec2bed2231b4044a6e47570a75b7d53.setContent(html_5ece4a75aecb929cd3eb4cec2f548413);
+            
+        
+
+        marker_e92964656bf02ed14f046c58fdc2ba64.bindPopup(popup_bec2bed2231b4044a6e47570a75b7d53)
+        ;
+
+        
+    
+    
+                marker_e92964656bf02ed14f046c58fdc2ba64.setIcon(icon_d154d845ba5deb05ff407b07c746c4dd);
+            
+    
+            var marker_62624c3669151d0143731bfe7cf2c84d = L.marker(
+                [-3.7345867, -38.56610903],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_adb48a29b679b49cefd2dc18764d54cb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d41208f38289ea6913b825a21441ec89 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_861d20249383d3aaaadf431e0a158190 = $(`<div id="html_861d20249383d3aaaadf431e0a158190" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - NORTH SHOPPING<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_d41208f38289ea6913b825a21441ec89.setContent(html_861d20249383d3aaaadf431e0a158190);
+            
+        
+
+        marker_62624c3669151d0143731bfe7cf2c84d.bindPopup(popup_d41208f38289ea6913b825a21441ec89)
+        ;
+
+        
+    
+    
+                marker_62624c3669151d0143731bfe7cf2c84d.setIcon(icon_adb48a29b679b49cefd2dc18764d54cb);
+            
+    
+            var marker_55083084f4e28f34ccd63a86e29065ff = L.marker(
+                [-3.77391301, -38.56794475],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_4f90a6f5ccd5ba72c01ad6d8de3b86d1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_85a19196a3a2838c45d84a07fb3dac2b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_9c8d9c2ccd714e5fde1d559c2595f94c = $(`<div id="html_9c8d9c2ccd714e5fde1d559c2595f94c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - PARANGABA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_85a19196a3a2838c45d84a07fb3dac2b.setContent(html_9c8d9c2ccd714e5fde1d559c2595f94c);
+            
+        
+
+        marker_55083084f4e28f34ccd63a86e29065ff.bindPopup(popup_85a19196a3a2838c45d84a07fb3dac2b)
+        ;
+
+        
+    
+    
+                marker_55083084f4e28f34ccd63a86e29065ff.setIcon(icon_4f90a6f5ccd5ba72c01ad6d8de3b86d1);
+            
+    
+            var marker_a225ed5d9c1e14fef267915f98a1b7e8 = L.marker(
+                [-3.80068381, -38.52989977],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_d5fffde6048cb87a2785c907b36592a8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1b1dae057d01fe8a7d57209c097ca20e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_6bc260aa4ccfe3acef160cf5e4181bd7 = $(`<div id="html_6bc260aa4ccfe3acef160cf5e4181bd7" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - PASSARE<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_1b1dae057d01fe8a7d57209c097ca20e.setContent(html_6bc260aa4ccfe3acef160cf5e4181bd7);
+            
+        
+
+        marker_a225ed5d9c1e14fef267915f98a1b7e8.bindPopup(popup_1b1dae057d01fe8a7d57209c097ca20e)
+        ;
+
+        
+    
+    
+                marker_a225ed5d9c1e14fef267915f98a1b7e8.setIcon(icon_d5fffde6048cb87a2785c907b36592a8);
+            
+    
+            var marker_2b2885b81165a112870e89ec2aeed341 = L.marker(
+                [-3.7468473, -38.5559982],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_f65c8fc38ee48ae38cbc33bc8382713b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_96882004c2919b08402be1549d828d4b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_4686f71cc4a7e8b3bc0836c28111f7da = $(`<div id="html_4686f71cc4a7e8b3bc0836c28111f7da" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - RODOLFO TEOFILO<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_96882004c2919b08402be1549d828d4b.setContent(html_4686f71cc4a7e8b3bc0836c28111f7da);
+            
+        
+
+        marker_2b2885b81165a112870e89ec2aeed341.bindPopup(popup_96882004c2919b08402be1549d828d4b)
+        ;
+
+        
+    
+    
+                marker_2b2885b81165a112870e89ec2aeed341.setIcon(icon_f65c8fc38ee48ae38cbc33bc8382713b);
+            
+    
+            var marker_482e9b4f43bf03f890b5c1083ce5a176 = L.marker(
+                [-3.7394701, -38.4895647],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_f9eda2cb4b8db1af2ce92e2c6297cff9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d64c896ab103273cc0f3278348155ce8 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_317ed8f52865d9171e3a7b5576abcd1a = $(`<div id="html_317ed8f52865d9171e3a7b5576abcd1a" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER LAGOA - SANTOS DUMONT<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_d64c896ab103273cc0f3278348155ce8.setContent(html_317ed8f52865d9171e3a7b5576abcd1a);
+            
+        
+
+        marker_482e9b4f43bf03f890b5c1083ce5a176.bindPopup(popup_d64c896ab103273cc0f3278348155ce8)
+        ;
+
+        
+    
+    
+                marker_482e9b4f43bf03f890b5c1083ce5a176.setIcon(icon_f9eda2cb4b8db1af2ce92e2c6297cff9);
+            
+    
+            var marker_ef1ad54516aca2e439d4560784170d67 = L.marker(
+                [-3.90694584, -38.5743777],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_c89cb83edfc4ef9ef5bda2d6b20a0996 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_26313341d87775e51d263d2c5c68740e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_8153c0ced8cca1fa816a76077d852c54 = $(`<div id="html_8153c0ced8cca1fa816a76077d852c54" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> CENTERBOX - PARQUE DOM PEDRO<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_26313341d87775e51d263d2c5c68740e.setContent(html_8153c0ced8cca1fa816a76077d852c54);
+            
+        
+
+        marker_ef1ad54516aca2e439d4560784170d67.bindPopup(popup_26313341d87775e51d263d2c5c68740e)
+        ;
+
+        
+    
+    
+                marker_ef1ad54516aca2e439d4560784170d67.setIcon(icon_c89cb83edfc4ef9ef5bda2d6b20a0996);
+            
+    
+            var marker_5092b8e2b11108118aa328c8a9d935aa = L.marker(
+                [-3.761929, -38.4906592],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_f69b737d5502771755b11c3d412c6802 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_60e4f4efa29590405e94e134d258711e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_bd6cd093e42549cae2b1069441cbd33d = $(`<div id="html_bd6cd093e42549cae2b1069441cbd33d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - GUARARAPES<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_60e4f4efa29590405e94e134d258711e.setContent(html_bd6cd093e42549cae2b1069441cbd33d);
+            
+        
+
+        marker_5092b8e2b11108118aa328c8a9d935aa.bindPopup(popup_60e4f4efa29590405e94e134d258711e)
+        ;
+
+        
+    
+    
+                marker_5092b8e2b11108118aa328c8a9d935aa.setIcon(icon_f69b737d5502771755b11c3d412c6802);
+            
+    
+            var marker_df175870b13552ecfcb5d8b812e2ead1 = L.marker(
+                [-3.7694439, -38.6045471],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_5b9b5ada2279dea8636a579741f0fe66 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2cbab1cec9afbd609dd38feb01219b5e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_86cdc4a898fb6774df7c90ab9d25a1e4 = $(`<div id="html_86cdc4a898fb6774df7c90ab9d25a1e4" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - CONJUNTO CEARA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_2cbab1cec9afbd609dd38feb01219b5e.setContent(html_86cdc4a898fb6774df7c90ab9d25a1e4);
+            
+        
+
+        marker_df175870b13552ecfcb5d8b812e2ead1.bindPopup(popup_2cbab1cec9afbd609dd38feb01219b5e)
+        ;
+
+        
+    
+    
+                marker_df175870b13552ecfcb5d8b812e2ead1.setIcon(icon_5b9b5ada2279dea8636a579741f0fe66);
+            
+    
+            var marker_0e9026efa74045f9207b5e5874aaf4fc = L.marker(
+                [-3.7580958, -38.5843396],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_5b752bf0ebfe45e72788493962962e9c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_9d0315646a3d08da4d3ffc4b820e5157 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_9e40ebdef4b873aebe4a122cec61911d = $(`<div id="html_9e40ebdef4b873aebe4a122cec61911d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - HENRIQUE JORGE<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_9d0315646a3d08da4d3ffc4b820e5157.setContent(html_9e40ebdef4b873aebe4a122cec61911d);
+            
+        
+
+        marker_0e9026efa74045f9207b5e5874aaf4fc.bindPopup(popup_9d0315646a3d08da4d3ffc4b820e5157)
+        ;
+
+        
+    
+    
+                marker_0e9026efa74045f9207b5e5874aaf4fc.setIcon(icon_5b752bf0ebfe45e72788493962962e9c);
+            
+    
+            var marker_5fbde656aa8f84093d4934237816d11c = L.marker(
+                [-3.7738473, -38.6282389],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_ebd7e737ec0a420e3d90b7f321a3aa91 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_097f751a695ca67848a3f469bc137c79 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_3fc9340b1ff72414d4c2066731641fde = $(`<div id="html_3fc9340b1ff72414d4c2066731641fde" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - JUREMA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_097f751a695ca67848a3f469bc137c79.setContent(html_3fc9340b1ff72414d4c2066731641fde);
+            
+        
+
+        marker_5fbde656aa8f84093d4934237816d11c.bindPopup(popup_097f751a695ca67848a3f469bc137c79)
+        ;
+
+        
+    
+    
+                marker_5fbde656aa8f84093d4934237816d11c.setIcon(icon_ebd7e737ec0a420e3d90b7f321a3aa91);
+            
+    
+            var marker_595f1ec6825fda9dfe8c9d172ae0f9a5 = L.marker(
+                [-3.7930876, -38.5335303],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_8117db871b26ca6996c396d349de57a8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c291696db45e0595cd166ab54b9717ec = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_e809bb6cdd6cfab22ea0cc65e0729310 = $(`<div id="html_e809bb6cdd6cfab22ea0cc65e0729310" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - PASSARE<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_c291696db45e0595cd166ab54b9717ec.setContent(html_e809bb6cdd6cfab22ea0cc65e0729310);
+            
+        
+
+        marker_595f1ec6825fda9dfe8c9d172ae0f9a5.bindPopup(popup_c291696db45e0595cd166ab54b9717ec)
+        ;
+
+        
+    
+    
+                marker_595f1ec6825fda9dfe8c9d172ae0f9a5.setIcon(icon_8117db871b26ca6996c396d349de57a8);
+            
+    
+            var marker_81fc83c80a2188b16f7b4db511ae232e = L.marker(
+                [-3.7426267, -38.5125024],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_f94f9f52cfbf7623738ffb2760427077 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3bd641fd59c1fe8dcb260f5ae6e85139 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a8a10b48a5bd974731adf100414791fc = $(`<div id="html_a8a10b48a5bd974731adf100414791fc" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - MINI MARKET<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_3bd641fd59c1fe8dcb260f5ae6e85139.setContent(html_a8a10b48a5bd974731adf100414791fc);
+            
+        
+
+        marker_81fc83c80a2188b16f7b4db511ae232e.bindPopup(popup_3bd641fd59c1fe8dcb260f5ae6e85139)
+        ;
+
+        
+    
+    
+                marker_81fc83c80a2188b16f7b4db511ae232e.setIcon(icon_f94f9f52cfbf7623738ffb2760427077);
+            
+    
+            var marker_bb0b59995bee18bab4430e176e75fe88 = L.marker(
+                [-3.8101342, -38.4938184],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_ca8e021eff317131d811a14abc4d2725 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_21541c102d2a9ef6896445a6a1ea4bbd = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_cbdaf89fcc4f66b2e36490f160fd8575 = $(`<div id="html_cbdaf89fcc4f66b2e36490f160fd8575" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - CAMBEBA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_21541c102d2a9ef6896445a6a1ea4bbd.setContent(html_cbdaf89fcc4f66b2e36490f160fd8575);
+            
+        
+
+        marker_bb0b59995bee18bab4430e176e75fe88.bindPopup(popup_21541c102d2a9ef6896445a6a1ea4bbd)
+        ;
+
+        
+    
+    
+                marker_bb0b59995bee18bab4430e176e75fe88.setIcon(icon_ca8e021eff317131d811a14abc4d2725);
+            
+    
+            var marker_7a93e3081641078fb6a1e56e60f4589b = L.marker(
+                [-3.8211125, -38.5562854],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_e741c5f045aa41b68cf57ba64b7d8e68 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8fff309bdeec451784f80052ba594d58 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_6ee79ab9419aa3a92c811c1177a387d2 = $(`<div id="html_6ee79ab9419aa3a92c811c1177a387d2" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - PARQUE DOIS IRMAOS<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_8fff309bdeec451784f80052ba594d58.setContent(html_6ee79ab9419aa3a92c811c1177a387d2);
+            
+        
+
+        marker_7a93e3081641078fb6a1e56e60f4589b.bindPopup(popup_8fff309bdeec451784f80052ba594d58)
+        ;
+
+        
+    
+    
+                marker_7a93e3081641078fb6a1e56e60f4589b.setIcon(icon_e741c5f045aa41b68cf57ba64b7d8e68);
+            
+    
+            var marker_94e3823826bfcf956d31a9508d54ad98 = L.marker(
+                [-3.83140920000002, -38.5605403],
+                {
+}
+            ).addTo(feature_group_5601b4f0caff17afbcf466fe7c2103d0);
+        
+    
+            var icon_30bfb06659917d358cdab4882ffb5e62 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_92c47e2a6dcf629babd5635a3684886e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_d071df153853c21fb75c917968fd2a39 = $(`<div id="html_d071df153853c21fb75c917968fd2a39" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> SUPER DO POVO - PREF JOSE WALTER<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> PEQUENOS REGIONAIS<br>          </div>     </div>`)[0];
+                popup_92c47e2a6dcf629babd5635a3684886e.setContent(html_d071df153853c21fb75c917968fd2a39);
+            
+        
+
+        marker_94e3823826bfcf956d31a9508d54ad98.bindPopup(popup_92c47e2a6dcf629babd5635a3684886e)
+        ;
+
+        
+    
+    
+                marker_94e3823826bfcf956d31a9508d54ad98.setIcon(icon_30bfb06659917d358cdab4882ffb5e62);
+            
+    
+            var feature_group_82a7eedad7b8a502565d1b5c612095fd = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_959561f994da3aeffd0219d7a75baa98 = L.marker(
+                [-3.7964091, -38.4936977],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_1a7f73b26d4039a50e8f049da9f06d9e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7f8721519699124b5780e7f498cb4fa0 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_6be296645be132f0aa04b3c4b03d6c84 = $(`<div id="html_6be296645be132f0aa04b3c4b03d6c84" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> EXTRA - OLIVEIRA PAIVA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_7f8721519699124b5780e7f498cb4fa0.setContent(html_6be296645be132f0aa04b3c4b03d6c84);
+            
+        
+
+        marker_959561f994da3aeffd0219d7a75baa98.bindPopup(popup_7f8721519699124b5780e7f498cb4fa0)
+        ;
+
+        
+    
+    
+                marker_959561f994da3aeffd0219d7a75baa98.setIcon(icon_1a7f73b26d4039a50e8f049da9f06d9e);
+            
+    
+            var marker_23462ba9024bb0c15b06cb87e1808ecf = L.marker(
+                [-3.7555418, -38.5303956],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_3b44e2cbd83635606821600008740286 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_323081db2fd97420c81374b7206e437b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_8935a1f50d17322ebd45ba671866d029 = $(`<div id="html_8935a1f50d17322ebd45ba671866d029" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> EXTRA - RODOVIARIA (1404)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_323081db2fd97420c81374b7206e437b.setContent(html_8935a1f50d17322ebd45ba671866d029);
+            
+        
+
+        marker_23462ba9024bb0c15b06cb87e1808ecf.bindPopup(popup_323081db2fd97420c81374b7206e437b)
+        ;
+
+        
+    
+    
+                marker_23462ba9024bb0c15b06cb87e1808ecf.setIcon(icon_3b44e2cbd83635606821600008740286);
+            
+    
+            var marker_ebb2e327c74f0c9617f23da436463e83 = L.marker(
+                [-3.7929007, -38.4796933],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_96e39a6ec4397305c6c46acff4ea6edb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c955c1151e9a5c8651c5266751dda769 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_274426b912effc4cf772cda38d51841e = $(`<div id="html_274426b912effc4cf772cda38d51841e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> EXTRA - WASHINGTON SOARES<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_c955c1151e9a5c8651c5266751dda769.setContent(html_274426b912effc4cf772cda38d51841e);
+            
+        
+
+        marker_ebb2e327c74f0c9617f23da436463e83.bindPopup(popup_c955c1151e9a5c8651c5266751dda769)
+        ;
+
+        
+    
+    
+                marker_ebb2e327c74f0c9617f23da436463e83.setIcon(icon_96e39a6ec4397305c6c46acff4ea6edb);
+            
+    
+            var marker_1cd29a502c230321fe0f00b07464fea9 = L.marker(
+                [-3.748629, -38.5229264],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_e1cc83488731c71ae011eab60d5938fc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1c7510bbd0df880572e9d9b96fbb26a5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5295fea9b0e34af5b49a40b2414317f0 = $(`<div id="html_5295fea9b0e34af5b49a40b2414317f0" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - AGUANAMBI (1398)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_1c7510bbd0df880572e9d9b96fbb26a5.setContent(html_5295fea9b0e34af5b49a40b2414317f0);
+            
+        
+
+        marker_1cd29a502c230321fe0f00b07464fea9.bindPopup(popup_1c7510bbd0df880572e9d9b96fbb26a5)
+        ;
+
+        
+    
+    
+                marker_1cd29a502c230321fe0f00b07464fea9.setIcon(icon_e1cc83488731c71ae011eab60d5938fc);
+            
+    
+            var marker_5df912f5967ab4de13ecb5c9e88d4296 = L.marker(
+                [-3.73407602, -38.49686086],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_aac9a00f5a0959ad14adc8d76c8a8b87 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7224bc4afe7613b84feb0808443472ea = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2510113953bcb9db378d4ac793412364 = $(`<div id="html_2510113953bcb9db378d4ac793412364" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - ALDEOTA (1249)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_7224bc4afe7613b84feb0808443472ea.setContent(html_2510113953bcb9db378d4ac793412364);
+            
+        
+
+        marker_5df912f5967ab4de13ecb5c9e88d4296.bindPopup(popup_7224bc4afe7613b84feb0808443472ea)
+        ;
+
+        
+    
+    
+                marker_5df912f5967ab4de13ecb5c9e88d4296.setIcon(icon_aac9a00f5a0959ad14adc8d76c8a8b87);
+            
+    
+            var marker_142c1e079ba1e32a9007073f37983cfb = L.marker(
+                [-3.7335995, -38.5586262],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_b4141aa1c9f02942cfc7331a9d53cc38 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7d1c961e05c20bfd69654b925aa2dc38 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_387665ae19de4fdd2d15711fb92af235 = $(`<div id="html_387665ae19de4fdd2d15711fb92af235" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - BEZERRA DE MENEZES (2375)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_7d1c961e05c20bfd69654b925aa2dc38.setContent(html_387665ae19de4fdd2d15711fb92af235);
+            
+        
+
+        marker_142c1e079ba1e32a9007073f37983cfb.bindPopup(popup_7d1c961e05c20bfd69654b925aa2dc38)
+        ;
+
+        
+    
+    
+                marker_142c1e079ba1e32a9007073f37983cfb.setIcon(icon_b4141aa1c9f02942cfc7331a9d53cc38);
+            
+    
+            var marker_254746b72eb0f492d24cbd5fdcfc8969 = L.marker(
+                [-3.7373679, -38.4974441],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_449168e2adfcedbe030b06febed2f343 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e18fe27d39ff72cd5472d402d5678713 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_94bc8a11ec6df9704e90c524c814e5f4 = $(`<div id="html_94bc8a11ec6df9704e90c524c814e5f4" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - CENTER UM (1209)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_e18fe27d39ff72cd5472d402d5678713.setContent(html_94bc8a11ec6df9704e90c524c814e5f4);
+            
+        
+
+        marker_254746b72eb0f492d24cbd5fdcfc8969.bindPopup(popup_e18fe27d39ff72cd5472d402d5678713)
+        ;
+
+        
+    
+    
+                marker_254746b72eb0f492d24cbd5fdcfc8969.setIcon(icon_449168e2adfcedbe030b06febed2f343);
+            
+    
+            var marker_b7df17b6bd1ca2f852234d3cdb680850 = L.marker(
+                [-3.7430401, -38.4859163],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_5461f696b485139d5dc75989a25b55dd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c431f9e7cf144f9446b6de337174a2d0 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_bd9a0624a35e76b54bf2bc85b04776b7 = $(`<div id="html_bd9a0624a35e76b54bf2bc85b04776b7" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - COCO (1253)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_c431f9e7cf144f9446b6de337174a2d0.setContent(html_bd9a0624a35e76b54bf2bc85b04776b7);
+            
+        
+
+        marker_b7df17b6bd1ca2f852234d3cdb680850.bindPopup(popup_c431f9e7cf144f9446b6de337174a2d0)
+        ;
+
+        
+    
+    
+                marker_b7df17b6bd1ca2f852234d3cdb680850.setIcon(icon_5461f696b485139d5dc75989a25b55dd);
+            
+    
+            var marker_43748b03a5ff6d6fd7b3fcb095e00597 = L.marker(
+                [-3.75451369, -38.48921518],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_187c37b5a83dac7e5679686eef390b69 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_27800fd5b31e66c790c89b14f7563094 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2a9b6883a391511bce668ee5233d3ca2 = $(`<div id="html_2a9b6883a391511bce668ee5233d3ca2" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - IGUATEMI (1339)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_27800fd5b31e66c790c89b14f7563094.setContent(html_2a9b6883a391511bce668ee5233d3ca2);
+            
+        
+
+        marker_43748b03a5ff6d6fd7b3fcb095e00597.bindPopup(popup_27800fd5b31e66c790c89b14f7563094)
+        ;
+
+        
+    
+    
+                marker_43748b03a5ff6d6fd7b3fcb095e00597.setIcon(icon_187c37b5a83dac7e5679686eef390b69);
+            
+    
+            var marker_3c66473437bab4d4b4f40f6f328ec13f = L.marker(
+                [-3.7399659, -38.5075747],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_1d14eaa069348443708c8f67f88f8113 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_27e107504954c7c2be78826d6a3b9e9e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_53684017d2919b6856e63b4fd4fcf86f = $(`<div id="html_53684017d2919b6856e63b4fd4fcf86f" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - JULIO VENTURA (1252)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_27e107504954c7c2be78826d6a3b9e9e.setContent(html_53684017d2919b6856e63b4fd4fcf86f);
+            
+        
+
+        marker_3c66473437bab4d4b4f40f6f328ec13f.bindPopup(popup_27e107504954c7c2be78826d6a3b9e9e)
+        ;
+
+        
+    
+    
+                marker_3c66473437bab4d4b4f40f6f328ec13f.setIcon(icon_1d14eaa069348443708c8f67f88f8113);
+            
+    
+            var marker_b13415520c457730a6e5dd6b400af40b = L.marker(
+                [-3.772043, -38.4828363],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_091161845fea1ecedabaabc79b633814 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_28ed57951b90fade9876db8f663a3f55 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_54298d52943ed1dee412d8e040bcad5d = $(`<div id="html_54298d52943ed1dee412d8e040bcad5d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - LUCIANO CAVALCANTE (2374)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_28ed57951b90fade9876db8f663a3f55.setContent(html_54298d52943ed1dee412d8e040bcad5d);
+            
+        
+
+        marker_b13415520c457730a6e5dd6b400af40b.bindPopup(popup_28ed57951b90fade9876db8f663a3f55)
+        ;
+
+        
+    
+    
+                marker_b13415520c457730a6e5dd6b400af40b.setIcon(icon_091161845fea1ecedabaabc79b633814);
+            
+    
+            var marker_5aa797e97146c2567e06492ca706d454 = L.marker(
+                [-3.7277865, -38.4862037],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_636a1f3af448def37cae07c8cb57a03f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ce1033c51b4768f998d2e876889accb1 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_072a9080472513b55b69924cc481b460 = $(`<div id="html_072a9080472513b55b69924cc481b460" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - MUCURIPE (1257)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_ce1033c51b4768f998d2e876889accb1.setContent(html_072a9080472513b55b69924cc481b460);
+            
+        
+
+        marker_5aa797e97146c2567e06492ca706d454.bindPopup(popup_ce1033c51b4768f998d2e876889accb1)
+        ;
+
+        
+    
+    
+                marker_5aa797e97146c2567e06492ca706d454.setIcon(icon_636a1f3af448def37cae07c8cb57a03f);
+            
+    
+            var marker_6b4dace16087b13fc5db30b8c7a2fd54 = L.marker(
+                [-3.7274751, -38.4937798],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_22851a5bf8659b65cc304f90bd64cba1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6286b0d98bd8291a7fc75bc5dc35e339 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_3711486619e22aa14a33af36af254fac = $(`<div id="html_3711486619e22aa14a33af36af254fac" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - NAUTICO (1004)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_6286b0d98bd8291a7fc75bc5dc35e339.setContent(html_3711486619e22aa14a33af36af254fac);
+            
+        
+
+        marker_6b4dace16087b13fc5db30b8c7a2fd54.bindPopup(popup_6286b0d98bd8291a7fc75bc5dc35e339)
+        ;
+
+        
+    
+    
+                marker_6b4dace16087b13fc5db30b8c7a2fd54.setIcon(icon_22851a5bf8659b65cc304f90bd64cba1);
+            
+    
+            var marker_b04951d7472a8ec178eb225bab17bc00 = L.marker(
+                [-3.7306636, -38.5131575],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_a45ced032264d99faab0241b51b9ee84 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f5b0102834f5007eeef2442babecfb01 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5ef101ea3d1c69cb75ccf18d933c6435 = $(`<div id="html_5ef101ea3d1c69cb75ccf18d933c6435" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - SANTOS DUMONT (1220)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_f5b0102834f5007eeef2442babecfb01.setContent(html_5ef101ea3d1c69cb75ccf18d933c6435);
+            
+        
+
+        marker_b04951d7472a8ec178eb225bab17bc00.bindPopup(popup_f5b0102834f5007eeef2442babecfb01)
+        ;
+
+        
+    
+    
+                marker_b04951d7472a8ec178eb225bab17bc00.setIcon(icon_a45ced032264d99faab0241b51b9ee84);
+            
+    
+            var marker_6ace4962b108bc294b28032f1961a470 = L.marker(
+                [-3.7466669, -38.4966291],
+                {
+}
+            ).addTo(feature_group_82a7eedad7b8a502565d1b5c612095fd);
+        
+    
+            var icon_46d3579332fe6c9de75583aaa620ed88 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b8d242610354a02566733dfcf8f7ebd5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_49afefeb6aebbc5d0f7de98e5b554ee2 = $(`<div id="html_49afefeb6aebbc5d0f7de98e5b554ee2" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> PAO DE ACUCAR - VIRGILIO TAVORA (1298)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER NACIONAL<br>          </div>     </div>`)[0];
+                popup_b8d242610354a02566733dfcf8f7ebd5.setContent(html_49afefeb6aebbc5d0f7de98e5b554ee2);
+            
+        
+
+        marker_6ace4962b108bc294b28032f1961a470.bindPopup(popup_b8d242610354a02566733dfcf8f7ebd5)
+        ;
+
+        
+    
+    
+                marker_6ace4962b108bc294b28032f1961a470.setIcon(icon_46d3579332fe6c9de75583aaa620ed88);
+            
+    
+            var feature_group_cc405f6f28d280a0c406fdbd63ba6a3d = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_03c23a89f2fc3a1ae1bfec835a3f59a3 = L.marker(
+                [-3.7440036, -38.5080673],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_76fd672f5707bdf90baf75a3919feb29 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7854023f817e570960fc082f128e5b7b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5f54d0782b65a5c4d68d3ffebd0b661e = $(`<div id="html_5f54d0782b65a5c4d68d3ffebd0b661e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (ANTONIO SALES)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_7854023f817e570960fc082f128e5b7b.setContent(html_5f54d0782b65a5c4d68d3ffebd0b661e);
+            
+        
+
+        marker_03c23a89f2fc3a1ae1bfec835a3f59a3.bindPopup(popup_7854023f817e570960fc082f128e5b7b)
+        ;
+
+        
+    
+    
+                marker_03c23a89f2fc3a1ae1bfec835a3f59a3.setIcon(icon_76fd672f5707bdf90baf75a3919feb29);
+            
+    
+            var marker_ff4dbb3b5ce2562a6f8a6dc3a0cab874 = L.marker(
+                [-3.73996838, -38.53237147],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_12110fd0fd1566242fc152a2569a1c3c = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b973e22de0c2e0a7f75b615bb035a518 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_f038dcd5d122e08a1f7517f42a6c4840 = $(`<div id="html_f038dcd5d122e08a1f7517f42a6c4840" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (BARAO DO RIO BRANCO)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_b973e22de0c2e0a7f75b615bb035a518.setContent(html_f038dcd5d122e08a1f7517f42a6c4840);
+            
+        
+
+        marker_ff4dbb3b5ce2562a6f8a6dc3a0cab874.bindPopup(popup_b973e22de0c2e0a7f75b615bb035a518)
+        ;
+
+        
+    
+    
+                marker_ff4dbb3b5ce2562a6f8a6dc3a0cab874.setIcon(icon_12110fd0fd1566242fc152a2569a1c3c);
+            
+    
+            var marker_3f59ab6a8699c1d4bb3462387c8cd423 = L.marker(
+                [-3.745611, -38.495747],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_5cf3455c8e8ad40687b65b66a5d36eba = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_42c8205493b2748bd185bb402b47ac0f = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_e425c8ad6a7049d97e40909fbdc71ef9 = $(`<div id="html_e425c8ad6a7049d97e40909fbdc71ef9" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (BENI CARVALHO)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_42c8205493b2748bd185bb402b47ac0f.setContent(html_e425c8ad6a7049d97e40909fbdc71ef9);
+            
+        
+
+        marker_3f59ab6a8699c1d4bb3462387c8cd423.bindPopup(popup_42c8205493b2748bd185bb402b47ac0f)
+        ;
+
+        
+    
+    
+                marker_3f59ab6a8699c1d4bb3462387c8cd423.setIcon(icon_5cf3455c8e8ad40687b65b66a5d36eba);
+            
+    
+            var marker_09ae086a20a0e320e4f850832dbfdea1 = L.marker(
+                [-3.7049139, -38.5780082],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_a064d406418dd0f0a81f0fc3eb809c47 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_33ab0774e8cecfeb59ae6400e6afe7de = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_05d99aa05106e1dda04f1d1d3ab15093 = $(`<div id="html_05d99aa05106e1dda04f1d1d3ab15093" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (CASTELO BRANCO)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_33ab0774e8cecfeb59ae6400e6afe7de.setContent(html_05d99aa05106e1dda04f1d1d3ab15093);
+            
+        
+
+        marker_09ae086a20a0e320e4f850832dbfdea1.bindPopup(popup_33ab0774e8cecfeb59ae6400e6afe7de)
+        ;
+
+        
+    
+    
+                marker_09ae086a20a0e320e4f850832dbfdea1.setIcon(icon_a064d406418dd0f0a81f0fc3eb809c47);
+            
+    
+            var marker_1edac01e58ec9e00e6fb5965c483dd8b = L.marker(
+                [-3.7216531, -38.540229],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_637f0fceac754a233c0522c609eac05e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7bde2cde2a1f2fb310250182e97e0ac4 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_ab4711f826d46d3c4bb4a976446a75f6 = $(`<div id="html_ab4711f826d46d3c4bb4a976446a75f6" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (CENTRO)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_7bde2cde2a1f2fb310250182e97e0ac4.setContent(html_ab4711f826d46d3c4bb4a976446a75f6);
+            
+        
+
+        marker_1edac01e58ec9e00e6fb5965c483dd8b.bindPopup(popup_7bde2cde2a1f2fb310250182e97e0ac4)
+        ;
+
+        
+    
+    
+                marker_1edac01e58ec9e00e6fb5965c483dd8b.setIcon(icon_637f0fceac754a233c0522c609eac05e);
+            
+    
+            var marker_25c3b8526a6297691a09b38f04454d8f = L.marker(
+                [-3.7888981, -38.4759777],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_59a80c13c3f92a35e39b956258750fce = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_259fa28d5cb8d975473da25cac434fc5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_898775f1e01bf014167a75d2e0d8eda1 = $(`<div id="html_898775f1e01bf014167a75d2e0d8eda1" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (ED BR SOARES)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_259fa28d5cb8d975473da25cac434fc5.setContent(html_898775f1e01bf014167a75d2e0d8eda1);
+            
+        
+
+        marker_25c3b8526a6297691a09b38f04454d8f.bindPopup(popup_259fa28d5cb8d975473da25cac434fc5)
+        ;
+
+        
+    
+    
+                marker_25c3b8526a6297691a09b38f04454d8f.setIcon(icon_59a80c13c3f92a35e39b956258750fce);
+            
+    
+            var marker_1906b2afd8bb06994e09a35bc39c7d26 = L.marker(
+                [-3.7354447, -38.4816158],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_32b50f51a287918a77d7346751f796e0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0961376974e5555248bbf73469476e99 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5502f4ce6c304354a7103bb5f672d616 = $(`<div id="html_5502f4ce6c304354a7103bb5f672d616" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (ENGENHEIRO SANTANA JR)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_0961376974e5555248bbf73469476e99.setContent(html_5502f4ce6c304354a7103bb5f672d616);
+            
+        
+
+        marker_1906b2afd8bb06994e09a35bc39c7d26.bindPopup(popup_0961376974e5555248bbf73469476e99)
+        ;
+
+        
+    
+    
+                marker_1906b2afd8bb06994e09a35bc39c7d26.setIcon(icon_32b50f51a287918a77d7346751f796e0);
+            
+    
+            var marker_56d9f7822beed246419943b0eb48fa3b = L.marker(
+                [-3.8795207, -38.4613795],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_199e9ffae45edcb9e660ceccbf6e481f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5dff3ebfe4cfae285690056fdbd24258 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_8620ec7733a23ec97d1805306308557e = $(`<div id="html_8620ec7733a23ec97d1805306308557e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (EUSEBIO)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_5dff3ebfe4cfae285690056fdbd24258.setContent(html_8620ec7733a23ec97d1805306308557e);
+            
+        
+
+        marker_56d9f7822beed246419943b0eb48fa3b.bindPopup(popup_5dff3ebfe4cfae285690056fdbd24258)
+        ;
+
+        
+    
+    
+                marker_56d9f7822beed246419943b0eb48fa3b.setIcon(icon_199e9ffae45edcb9e660ceccbf6e481f);
+            
+    
+            var marker_1327a289accc7bf242ce1fb37f97ae57 = L.marker(
+                [-3.76752651, -38.55298701],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_aea7827ee75be7d4ec34e84391af5ac7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c73e4c59062c614f0114c57abec2d109 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_0e0d642b9716052ac8ce571d45b6a1a4 = $(`<div id="html_0e0d642b9716052ac8ce571d45b6a1a4" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (EXPRESS 01)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_c73e4c59062c614f0114c57abec2d109.setContent(html_0e0d642b9716052ac8ce571d45b6a1a4);
+            
+        
+
+        marker_1327a289accc7bf242ce1fb37f97ae57.bindPopup(popup_c73e4c59062c614f0114c57abec2d109)
+        ;
+
+        
+    
+    
+                marker_1327a289accc7bf242ce1fb37f97ae57.setIcon(icon_aea7827ee75be7d4ec34e84391af5ac7);
+            
+    
+            var marker_9b0582b1874702986634f9233fef88ac = L.marker(
+                [-3.76328481, -38.54773512],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_c4b82c45234a5b6d91af7d4533534909 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6c2e20d98e4e74c5122328d6e35c7108 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_f33da2266eb83c9f44ae535b0f86b46c = $(`<div id="html_f33da2266eb83c9f44ae535b0f86b46c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (EXPRESS 02)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_6c2e20d98e4e74c5122328d6e35c7108.setContent(html_f33da2266eb83c9f44ae535b0f86b46c);
+            
+        
+
+        marker_9b0582b1874702986634f9233fef88ac.bindPopup(popup_6c2e20d98e4e74c5122328d6e35c7108)
+        ;
+
+        
+    
+    
+                marker_9b0582b1874702986634f9233fef88ac.setIcon(icon_c4b82c45234a5b6d91af7d4533534909);
+            
+    
+            var marker_519b327673348f9008a59780cb3fdf74 = L.marker(
+                [-3.7532492, -38.5276962],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_799521223742d12069e8530ff0b15d74 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2acc8ad7a304297f25368d8fb4a36536 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_8b47fcfdb39209267762d58d1922e242 = $(`<div id="html_8b47fcfdb39209267762d58d1922e242" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (FATIMA)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_2acc8ad7a304297f25368d8fb4a36536.setContent(html_8b47fcfdb39209267762d58d1922e242);
+            
+        
+
+        marker_519b327673348f9008a59780cb3fdf74.bindPopup(popup_2acc8ad7a304297f25368d8fb4a36536)
+        ;
+
+        
+    
+    
+                marker_519b327673348f9008a59780cb3fdf74.setIcon(icon_799521223742d12069e8530ff0b15d74);
+            
+    
+            var marker_fbbc497b37770639e75ac9fcdfa71866 = L.marker(
+                [-3.8194034, -38.4963739],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_f8e20e9e3f23a209983ddc5bed414835 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4dda56b7553eeb529c0013aa0c27d434 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_4409aa08231c7d1d40eb275e713a4d82 = $(`<div id="html_4409aa08231c7d1d40eb275e713a4d82" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (FREI CIRILO)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_4dda56b7553eeb529c0013aa0c27d434.setContent(html_4409aa08231c7d1d40eb275e713a4d82);
+            
+        
+
+        marker_fbbc497b37770639e75ac9fcdfa71866.bindPopup(popup_4dda56b7553eeb529c0013aa0c27d434)
+        ;
+
+        
+    
+    
+                marker_fbbc497b37770639e75ac9fcdfa71866.setIcon(icon_f8e20e9e3f23a209983ddc5bed414835);
+            
+    
+            var marker_d318c6b1c7df90467f0653a1511b28bb = L.marker(
+                [-3.7598094, -38.5861946],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_9475e12aa73c2cbd6018169742250541 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_dd8bcd0fd99e7261df6410e92871ce60 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_ad06cd02c9a0d2034da4d495f4487b3e = $(`<div id="html_ad06cd02c9a0d2034da4d495f4487b3e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (HENRIQUE JORGE)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_dd8bcd0fd99e7261df6410e92871ce60.setContent(html_ad06cd02c9a0d2034da4d495f4487b3e);
+            
+        
+
+        marker_d318c6b1c7df90467f0653a1511b28bb.bindPopup(popup_dd8bcd0fd99e7261df6410e92871ce60)
+        ;
+
+        
+    
+    
+                marker_d318c6b1c7df90467f0653a1511b28bb.setIcon(icon_9475e12aa73c2cbd6018169742250541);
+            
+    
+            var marker_8bf598ffa886ff75806981e57b50e513 = L.marker(
+                [-3.7407932, -38.516113],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_4e07f39930207fe5a8a7b21451fced6e = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d537fc73c6a7dfeb38df6f864552a02c = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_32614bb37aa98773dc21abdcfd9f4c23 = $(`<div id="html_32614bb37aa98773dc21abdcfd9f4c23" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (ILDEFONSO ALBANO)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_d537fc73c6a7dfeb38df6f864552a02c.setContent(html_32614bb37aa98773dc21abdcfd9f4c23);
+            
+        
+
+        marker_8bf598ffa886ff75806981e57b50e513.bindPopup(popup_d537fc73c6a7dfeb38df6f864552a02c)
+        ;
+
+        
+    
+    
+                marker_8bf598ffa886ff75806981e57b50e513.setIcon(icon_4e07f39930207fe5a8a7b21451fced6e);
+            
+    
+            var marker_2b5e830acd622177bf28997b45815591 = L.marker(
+                [-3.7374817, -38.5204755],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_5e5c8e227267d9c931b5238974d3a3e4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6378872ff3f585f2656f2ba77bfdd06a = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_7ff520d1181c7e3857fa2bbe4cfce06d = $(`<div id="html_7ff520d1181c7e3857fa2bbe4cfce06d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (J DA PENHA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_6378872ff3f585f2656f2ba77bfdd06a.setContent(html_7ff520d1181c7e3857fa2bbe4cfce06d);
+            
+        
+
+        marker_2b5e830acd622177bf28997b45815591.bindPopup(popup_6378872ff3f585f2656f2ba77bfdd06a)
+        ;
+
+        
+    
+    
+                marker_2b5e830acd622177bf28997b45815591.setIcon(icon_5e5c8e227267d9c931b5238974d3a3e4);
+            
+    
+            var marker_ded0691620807bd08aa204fcc08f5e43 = L.marker(
+                [-3.72013, -38.54911],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_915001b0d38cbf39dc11fb9800754fa8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f87942d6fd814d47466b71c3cfc681dc = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a11fe9940ca1766003e97f427c075c07 = $(`<div id="html_a11fe9940ca1766003e97f427c075c07" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JACARECANGA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_f87942d6fd814d47466b71c3cfc681dc.setContent(html_a11fe9940ca1766003e97f427c075c07);
+            
+        
+
+        marker_ded0691620807bd08aa204fcc08f5e43.bindPopup(popup_f87942d6fd814d47466b71c3cfc681dc)
+        ;
+
+        
+    
+    
+                marker_ded0691620807bd08aa204fcc08f5e43.setIcon(icon_915001b0d38cbf39dc11fb9800754fa8);
+            
+    
+            var marker_40337cdc29463bda2e65e7ab4bb8fc88 = L.marker(
+                [-3.782635, -38.5538401],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_2529fb3cb4692eb7ac836b613d2b3783 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_aef684bb91eb61a3884da028c3558388 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_803dbfce2bf8d6c192bc4b6b7f557c81 = $(`<div id="html_803dbfce2bf8d6c192bc4b6b7f557c81" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOAO CARLOS)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_aef684bb91eb61a3884da028c3558388.setContent(html_803dbfce2bf8d6c192bc4b6b7f557c81);
+            
+        
+
+        marker_40337cdc29463bda2e65e7ab4bb8fc88.bindPopup(popup_aef684bb91eb61a3884da028c3558388)
+        ;
+
+        
+    
+    
+                marker_40337cdc29463bda2e65e7ab4bb8fc88.setIcon(icon_2529fb3cb4692eb7ac836b613d2b3783);
+            
+    
+            var marker_b959275131eabdfe19663df7556ec768 = L.marker(
+                [-3.7570117, -38.5530651],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_cc3412dd77de53e2f5191637d81010c3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_06682532fba11bbb6959f778423b35d6 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_73103fec7477c859dfffd2ffc2994acc = $(`<div id="html_73103fec7477c859dfffd2ffc2994acc" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOAO PESSOA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_06682532fba11bbb6959f778423b35d6.setContent(html_73103fec7477c859dfffd2ffc2994acc);
+            
+        
+
+        marker_b959275131eabdfe19663df7556ec768.bindPopup(popup_06682532fba11bbb6959f778423b35d6)
+        ;
+
+        
+    
+    
+                marker_b959275131eabdfe19663df7556ec768.setIcon(icon_cc3412dd77de53e2f5191637d81010c3);
+            
+    
+            var marker_069d5d434e52c00666f949ba85b41c19 = L.marker(
+                [-3.77305558, -38.57358276],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_3ef8b8640dd57fbe5cf1a5a7a872fdd2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0427aee30697fac88a6b0eff8fd9b5c5 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_f737f606ebecc9d93f41628b1fd46bc3 = $(`<div id="html_f737f606ebecc9d93f41628b1fd46bc3" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOAO XXIII)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_0427aee30697fac88a6b0eff8fd9b5c5.setContent(html_f737f606ebecc9d93f41628b1fd46bc3);
+            
+        
+
+        marker_069d5d434e52c00666f949ba85b41c19.bindPopup(popup_0427aee30697fac88a6b0eff8fd9b5c5)
+        ;
+
+        
+    
+    
+                marker_069d5d434e52c00666f949ba85b41c19.setIcon(icon_3ef8b8640dd57fbe5cf1a5a7a872fdd2);
+            
+    
+            var marker_951e30d91fd9e34d6a683def9fe6b06f = L.marker(
+                [-3.8301305, -38.4875383],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_3ad109a9e0727f3b4e1a162a09010c6b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0b65ac679826f49d834aced06cde7703 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_086b908d32fda688b0e41cbe4033975f = $(`<div id="html_086b908d32fda688b0e41cbe4033975f" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOAQUIM FELICIO)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_0b65ac679826f49d834aced06cde7703.setContent(html_086b908d32fda688b0e41cbe4033975f);
+            
+        
+
+        marker_951e30d91fd9e34d6a683def9fe6b06f.bindPopup(popup_0b65ac679826f49d834aced06cde7703)
+        ;
+
+        
+    
+    
+                marker_951e30d91fd9e34d6a683def9fe6b06f.setIcon(icon_3ad109a9e0727f3b4e1a162a09010c6b);
+            
+    
+            var marker_62d27488f2bf812ff5ec96e592765c0d = L.marker(
+                [-3.7882169, -38.50204381],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_092539da9b5cab6e296ebb0615207de8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_8c68a2955d2dcc7978edce4fb4511c13 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_222e5c6fe0b9e568d9d2a80a4e2e1e66 = $(`<div id="html_222e5c6fe0b9e568d9d2a80a4e2e1e66" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOSE LEON)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_8c68a2955d2dcc7978edce4fb4511c13.setContent(html_222e5c6fe0b9e568d9d2a80a4e2e1e66);
+            
+        
+
+        marker_62d27488f2bf812ff5ec96e592765c0d.bindPopup(popup_8c68a2955d2dcc7978edce4fb4511c13)
+        ;
+
+        
+    
+    
+                marker_62d27488f2bf812ff5ec96e592765c0d.setIcon(icon_092539da9b5cab6e296ebb0615207de8);
+            
+    
+            var marker_e8dbc3a2aa4eedaea1f56fc8bb0f34fc = L.marker(
+                [-3.83055313, -38.56049735],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_96c3883262317adfd154db214ad11bae = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d57d3da373e0ead34c5d588c5fff1997 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_49cd7f777c62d9621a439c0a85387e78 = $(`<div id="html_49cd7f777c62d9621a439c0a85387e78" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOSE WALTER 01)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_d57d3da373e0ead34c5d588c5fff1997.setContent(html_49cd7f777c62d9621a439c0a85387e78);
+            
+        
+
+        marker_e8dbc3a2aa4eedaea1f56fc8bb0f34fc.bindPopup(popup_d57d3da373e0ead34c5d588c5fff1997)
+        ;
+
+        
+    
+    
+                marker_e8dbc3a2aa4eedaea1f56fc8bb0f34fc.setIcon(icon_96c3883262317adfd154db214ad11bae);
+            
+    
+            var marker_7a0b15499fbc7fb24d8e5ed38334c136 = L.marker(
+                [-3.8298586, -38.55165528],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_92ffd548409c4707671477ffd608af09 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_91e708d232a11d7646c60df9e7a10683 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_621e700325963eeb67fcee65e72cc3d6 = $(`<div id="html_621e700325963eeb67fcee65e72cc3d6" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOSE WALTER 02)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_91e708d232a11d7646c60df9e7a10683.setContent(html_621e700325963eeb67fcee65e72cc3d6);
+            
+        
+
+        marker_7a0b15499fbc7fb24d8e5ed38334c136.bindPopup(popup_91e708d232a11d7646c60df9e7a10683)
+        ;
+
+        
+    
+    
+                marker_7a0b15499fbc7fb24d8e5ed38334c136.setIcon(icon_92ffd548409c4707671477ffd608af09);
+            
+    
+            var marker_f3c8ebfb02b3c7c279762980cc23dbd0 = L.marker(
+                [-3.7403104, -38.5603054],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_3186b390176b7ed504e28ca692e26605 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_74d68fe843cec61f6d56d8203ab1e141 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_bfce6df2ad5d9b22cc6fc1e92856a6db = $(`<div id="html_bfce6df2ad5d9b22cc6fc1e92856a6db" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JOVITA FEITOSA)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_74d68fe843cec61f6d56d8203ab1e141.setContent(html_bfce6df2ad5d9b22cc6fc1e92856a6db);
+            
+        
+
+        marker_f3c8ebfb02b3c7c279762980cc23dbd0.bindPopup(popup_74d68fe843cec61f6d56d8203ab1e141)
+        ;
+
+        
+    
+    
+                marker_f3c8ebfb02b3c7c279762980cc23dbd0.setIcon(icon_3186b390176b7ed504e28ca692e26605);
+            
+    
+            var marker_893db73b5066063e9badb4d96f0d0142 = L.marker(
+                [-3.7960364, -38.4990562],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_9ed6c688ef31d50197a24eca2410f39d = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6eb33972b73b7573f226d21fb9f49c17 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_0c44dbd726dadffb13f72c9d6031bf5f = $(`<div id="html_0c44dbd726dadffb13f72c9d6031bf5f" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (JULIO LIMA)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_6eb33972b73b7573f226d21fb9f49c17.setContent(html_0c44dbd726dadffb13f72c9d6031bf5f);
+            
+        
+
+        marker_893db73b5066063e9badb4d96f0d0142.bindPopup(popup_6eb33972b73b7573f226d21fb9f49c17)
+        ;
+
+        
+    
+    
+                marker_893db73b5066063e9badb4d96f0d0142.setIcon(icon_9ed6c688ef31d50197a24eca2410f39d);
+            
+    
+            var marker_b22075c61307901df983794a5ace3ba6 = L.marker(
+                [-3.8819005, -38.62523],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_90596b415771ac31e8a14d69220a5aea = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5e2518fe82779d47a748a2464dc778b0 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_767bea051a8146dfc7959632ec856857 = $(`<div id="html_767bea051a8146dfc7959632ec856857" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (MARACANAU)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_5e2518fe82779d47a748a2464dc778b0.setContent(html_767bea051a8146dfc7959632ec856857);
+            
+        
+
+        marker_b22075c61307901df983794a5ace3ba6.bindPopup(popup_5e2518fe82779d47a748a2464dc778b0)
+        ;
+
+        
+    
+    
+                marker_b22075c61307901df983794a5ace3ba6.setIcon(icon_90596b415771ac31e8a14d69220a5aea);
+            
+    
+            var marker_332f7e2557354e089e37c2b604c2456f = L.marker(
+                [-3.79182527, -38.5671401],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_9e28cf3f7159ce6161d9f9112cfd8686 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b3140f1d9c6764bb1525a315aa5ae620 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_9013928f58204668971c18b5a18d050c = $(`<div id="html_9013928f58204668971c18b5a18d050c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (MARAPONGA)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_b3140f1d9c6764bb1525a315aa5ae620.setContent(html_9013928f58204668971c18b5a18d050c);
+            
+        
+
+        marker_332f7e2557354e089e37c2b604c2456f.bindPopup(popup_b3140f1d9c6764bb1525a315aa5ae620)
+        ;
+
+        
+    
+    
+                marker_332f7e2557354e089e37c2b604c2456f.setIcon(icon_9e28cf3f7159ce6161d9f9112cfd8686);
+            
+    
+            var marker_52f5b93e8532ab6534e3d93d0c5993db = L.marker(
+                [-3.7498338, -38.5846885],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_a4d4bf88ca68b5cda55e6f7eea01bdd0 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_83ae9df5beb74052e0493446606b57b0 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_17bdf7b8c64b0388e99571afa7049d4f = $(`<div id="html_17bdf7b8c64b0388e99571afa7049d4f" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (MATOS DOURADO)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_83ae9df5beb74052e0493446606b57b0.setContent(html_17bdf7b8c64b0388e99571afa7049d4f);
+            
+        
+
+        marker_52f5b93e8532ab6534e3d93d0c5993db.bindPopup(popup_83ae9df5beb74052e0493446606b57b0)
+        ;
+
+        
+    
+    
+                marker_52f5b93e8532ab6534e3d93d0c5993db.setIcon(icon_a4d4bf88ca68b5cda55e6f7eea01bdd0);
+            
+    
+            var marker_89f37fb852c32b5803593af1b3b4eba3 = L.marker(
+                [-3.8194224, -38.4817816],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_2c6f5315a1fd1be745da03a67c7c4dd3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e3a9320d3490c67ae0e61a7b716bae42 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_fd7823309fbc7273a1a5151bb22a679e = $(`<div id="html_fd7823309fbc7273a1a5151bb22a679e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (MESSEJANA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_e3a9320d3490c67ae0e61a7b716bae42.setContent(html_fd7823309fbc7273a1a5151bb22a679e);
+            
+        
+
+        marker_89f37fb852c32b5803593af1b3b4eba3.bindPopup(popup_e3a9320d3490c67ae0e61a7b716bae42)
+        ;
+
+        
+    
+    
+                marker_89f37fb852c32b5803593af1b3b4eba3.setIcon(icon_2c6f5315a1fd1be745da03a67c7c4dd3);
+            
+    
+            var marker_e3bc50e9a6e1c4caca2e61fcf41da8ba = L.marker(
+                [-3.81050075, -38.57394099],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_7837d238a7d228d8db99eb42fd8cc7da = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_59a1d82ef6fabd161918240c456c8145 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_242c1386f0e99704088467ec3d2a2e40 = $(`<div id="html_242c1386f0e99704088467ec3d2a2e40" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (MONDUBIM)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_59a1d82ef6fabd161918240c456c8145.setContent(html_242c1386f0e99704088467ec3d2a2e40);
+            
+        
+
+        marker_e3bc50e9a6e1c4caca2e61fcf41da8ba.bindPopup(popup_59a1d82ef6fabd161918240c456c8145)
+        ;
+
+        
+    
+    
+                marker_e3bc50e9a6e1c4caca2e61fcf41da8ba.setIcon(icon_7837d238a7d228d8db99eb42fd8cc7da);
+            
+    
+            var marker_cb87201a192ccdea9a984b270ca56a44 = L.marker(
+                [-3.7955137, -38.4901664],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_ca150a2d556526c1e78a73a5508481f6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ab6185191baa895b08fa15bfafad6362 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_da50abafdc166c562b2bab3b0cd75bd6 = $(`<div id="html_da50abafdc166c562b2bab3b0cd75bd6" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (OLIVEIRA PAIVA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_ab6185191baa895b08fa15bfafad6362.setContent(html_da50abafdc166c562b2bab3b0cd75bd6);
+            
+        
+
+        marker_cb87201a192ccdea9a984b270ca56a44.bindPopup(popup_ab6185191baa895b08fa15bfafad6362)
+        ;
+
+        
+    
+    
+                marker_cb87201a192ccdea9a984b270ca56a44.setIcon(icon_ca150a2d556526c1e78a73a5508481f6);
+            
+    
+            var marker_f84095d15ce22e686f3b4b1b67f4997c = L.marker(
+                [-3.8109052, -38.6092229],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_3f4ec8497e1473070ab7539bc1894379 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_191ad3372d3000e4e39f7fff56acd7b1 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_7b20e6377457f1d9e4c4e5b862726ece = $(`<div id="html_7b20e6377457f1d9e4c4e5b862726ece" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (OSORIO DE PAIVA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_191ad3372d3000e4e39f7fff56acd7b1.setContent(html_7b20e6377457f1d9e4c4e5b862726ece);
+            
+        
+
+        marker_f84095d15ce22e686f3b4b1b67f4997c.bindPopup(popup_191ad3372d3000e4e39f7fff56acd7b1)
+        ;
+
+        
+    
+    
+                marker_f84095d15ce22e686f3b4b1b67f4997c.setIcon(icon_3f4ec8497e1473070ab7539bc1894379);
+            
+    
+            var marker_bb8897db5abe6b2ef9fbf2c85fd798ce = L.marker(
+                [-3.79093331, -38.53740405],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_ae733ea5c960cfafd94483823a7524a8 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5d785afe3cd82f034e522efff405cc19 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_b467f1825ba3f27452d41114f9769fc4 = $(`<div id="html_b467f1825ba3f27452d41114f9769fc4" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (PASSARE)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_5d785afe3cd82f034e522efff405cc19.setContent(html_b467f1825ba3f27452d41114f9769fc4);
+            
+        
+
+        marker_bb8897db5abe6b2ef9fbf2c85fd798ce.bindPopup(popup_5d785afe3cd82f034e522efff405cc19)
+        ;
+
+        
+    
+    
+                marker_bb8897db5abe6b2ef9fbf2c85fd798ce.setIcon(icon_ae733ea5c960cfafd94483823a7524a8);
+            
+    
+            var marker_865964465959571d1e7fb947898b9863 = L.marker(
+                [-3.79612714, -38.49383649],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_a51d5bbd61d3b1583e9d226ee87f0773 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b69d6fdfcf607f018797b9854165e502 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_cd77233e90d18bca42daa8c35d8f31e5 = $(`<div id="html_cd77233e90d18bca42daa8c35d8f31e5" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (PATIO OLIVEIRA PAIVA)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_b69d6fdfcf607f018797b9854165e502.setContent(html_cd77233e90d18bca42daa8c35d8f31e5);
+            
+        
+
+        marker_865964465959571d1e7fb947898b9863.bindPopup(popup_b69d6fdfcf607f018797b9854165e502)
+        ;
+
+        
+    
+    
+                marker_865964465959571d1e7fb947898b9863.setIcon(icon_a51d5bbd61d3b1583e9d226ee87f0773);
+            
+    
+            var marker_13c7f65771eba44c7df1e4a54d753dd7 = L.marker(
+                [-3.7411919, -38.4958533],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_dbb036a66e50cc47efa5ad633ca40cb2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_35c1900883241a4de42bcb514ede5343 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_55e7fa313ddde4411a8b3c7f81c41aa6 = $(`<div id="html_55e7fa313ddde4411a8b3c7f81c41aa6" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (PE ANTONIO TOMAS)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_35c1900883241a4de42bcb514ede5343.setContent(html_55e7fa313ddde4411a8b3c7f81c41aa6);
+            
+        
+
+        marker_13c7f65771eba44c7df1e4a54d753dd7.bindPopup(popup_35c1900883241a4de42bcb514ede5343)
+        ;
+
+        
+    
+    
+                marker_13c7f65771eba44c7df1e4a54d753dd7.setIcon(icon_dbb036a66e50cc47efa5ad633ca40cb2);
+            
+    
+            var marker_48374eba22fc4a40a9f3911934fa8ac3 = L.marker(
+                [-3.7338116, -38.5136501],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_987a686f1938e1da33c2adf2336a69b6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_68702c3c2ef1f15cc35e14358f67ac3a = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_d84018d89a5d9cc71edc497e73b0cfba = $(`<div id="html_d84018d89a5d9cc71edc497e73b0cfba" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (PINTO MADEIRA)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_68702c3c2ef1f15cc35e14358f67ac3a.setContent(html_d84018d89a5d9cc71edc497e73b0cfba);
+            
+        
+
+        marker_48374eba22fc4a40a9f3911934fa8ac3.bindPopup(popup_68702c3c2ef1f15cc35e14358f67ac3a)
+        ;
+
+        
+    
+    
+                marker_48374eba22fc4a40a9f3911934fa8ac3.setIcon(icon_987a686f1938e1da33c2adf2336a69b6);
+            
+    
+            var marker_b553667cba5fbab96631ab19e58432cc = L.marker(
+                [-3.7302312, -38.568373],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_2f01ce2f679feebeafefe6ea8bceaebb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_47ddbd00be75c3d8becb74d958f4e054 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_c396171402a74c3e61adba09cf7dbe61 = $(`<div id="html_c396171402a74c3e61adba09cf7dbe61" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (PRESIDENTE KENNEDY)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_47ddbd00be75c3d8becb74d958f4e054.setContent(html_c396171402a74c3e61adba09cf7dbe61);
+            
+        
+
+        marker_b553667cba5fbab96631ab19e58432cc.bindPopup(popup_47ddbd00be75c3d8becb74d958f4e054)
+        ;
+
+        
+    
+    
+                marker_b553667cba5fbab96631ab19e58432cc.setIcon(icon_2f01ce2f679feebeafefe6ea8bceaebb);
+            
+    
+            var marker_87796c2b897be209e0de52f4a5788ff7 = L.marker(
+                [-3.787502, -38.547114],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_98a80c956ffcec571b6ef1c2aaf231cc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_41e32eee3cfaa9426c479830721ad08c = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_662a0e40a760b1e6524c9599ff538ee6 = $(`<div id="html_662a0e40a760b1e6524c9599ff538ee6" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (SERRINHA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_41e32eee3cfaa9426c479830721ad08c.setContent(html_662a0e40a760b1e6524c9599ff538ee6);
+            
+        
+
+        marker_87796c2b897be209e0de52f4a5788ff7.bindPopup(popup_41e32eee3cfaa9426c479830721ad08c)
+        ;
+
+        
+    
+    
+                marker_87796c2b897be209e0de52f4a5788ff7.setIcon(icon_98a80c956ffcec571b6ef1c2aaf231cc);
+            
+    
+            var marker_6f93ba4362dd66e3d89cb3cae517fa76 = L.marker(
+                [-3.789045, -38.5864455],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_8dddf7d6d8d0dc5e4a83667d26aa126a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7aba4b964c386f4d6182906ee37453c4 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a976679b81e45b29780952aa78822cbd = $(`<div id="html_a976679b81e45b29780952aa78822cbd" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (SIQUEIRA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_7aba4b964c386f4d6182906ee37453c4.setContent(html_a976679b81e45b29780952aa78822cbd);
+            
+        
+
+        marker_6f93ba4362dd66e3d89cb3cae517fa76.bindPopup(popup_7aba4b964c386f4d6182906ee37453c4)
+        ;
+
+        
+    
+    
+                marker_6f93ba4362dd66e3d89cb3cae517fa76.setIcon(icon_8dddf7d6d8d0dc5e4a83667d26aa126a);
+            
+    
+            var marker_bf3f5841c1adf1cf64c42b13f4c4014b = L.marker(
+                [-3.7411822, -38.5041525],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_656d43ac2e3796155b71b62cf0a18d6f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c37ce536cb086dd3c1d986614a796f6b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_3e0e805fdc154d5b8964a78be2b49317 = $(`<div id="html_3e0e805fdc154d5b8964a78be2b49317" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (TIBURCIO CAVALCANTE)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_c37ce536cb086dd3c1d986614a796f6b.setContent(html_3e0e805fdc154d5b8964a78be2b49317);
+            
+        
+
+        marker_bf3f5841c1adf1cf64c42b13f4c4014b.bindPopup(popup_c37ce536cb086dd3c1d986614a796f6b)
+        ;
+
+        
+    
+    
+                marker_bf3f5841c1adf1cf64c42b13f4c4014b.setIcon(icon_656d43ac2e3796155b71b62cf0a18d6f);
+            
+    
+            var marker_91d5077ac637fd5cc657e816c1429407 = L.marker(
+                [-3.7495749, -38.5285489],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_acf5580dfbe38b83fd33ccba65a0bc13 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_43a96c654be44c69fb2a76d679cf7f44 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_832a14860ef80dcd9b3381c98180b6dc = $(`<div id="html_832a14860ef80dcd9b3381c98180b6dc" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (TREZE DE MAIO)<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_43a96c654be44c69fb2a76d679cf7f44.setContent(html_832a14860ef80dcd9b3381c98180b6dc);
+            
+        
+
+        marker_91d5077ac637fd5cc657e816c1429407.bindPopup(popup_43a96c654be44c69fb2a76d679cf7f44)
+        ;
+
+        
+    
+    
+                marker_91d5077ac637fd5cc657e816c1429407.setIcon(icon_acf5580dfbe38b83fd33ccba65a0bc13);
+            
+    
+            var marker_54a4144c8cc7032be6187ebf24a5a5c2 = L.marker(
+                [-3.7233183, -38.5963513],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_df82476e842a801528316cd439e2edfd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_5b54c6d79fa7173984753ffc702790b1 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_c735139e1a4a48f2252b1905011efcb5 = $(`<div id="html_c735139e1a4a48f2252b1905011efcb5" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (VILA VELHA)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_5b54c6d79fa7173984753ffc702790b1.setContent(html_c735139e1a4a48f2252b1905011efcb5);
+            
+        
+
+        marker_54a4144c8cc7032be6187ebf24a5a5c2.bindPopup(popup_5b54c6d79fa7173984753ffc702790b1)
+        ;
+
+        
+    
+    
+                marker_54a4144c8cc7032be6187ebf24a5a5c2.setIcon(icon_df82476e842a801528316cd439e2edfd);
+            
+    
+            var marker_4296ef16bdf94e48a51f3770cdc4938e = L.marker(
+                [-3.7344387, -38.4922603],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_c6972bcfadd94e13dda0ffdbb30a84bc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_455e183324c379dd8137cc22a342b982 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2b5987a6e2ecb3371729652f3dac2288 = $(`<div id="html_2b5987a6e2ecb3371729652f3dac2288" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (VIRGILIO TAVORA)<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_455e183324c379dd8137cc22a342b982.setContent(html_2b5987a6e2ecb3371729652f3dac2288);
+            
+        
+
+        marker_4296ef16bdf94e48a51f3770cdc4938e.bindPopup(popup_455e183324c379dd8137cc22a342b982)
+        ;
+
+        
+    
+    
+                marker_4296ef16bdf94e48a51f3770cdc4938e.setIcon(icon_c6972bcfadd94e13dda0ffdbb30a84bc);
+            
+    
+            var marker_2ce32f6dc97fbc0f8c2b570e1c978db5 = L.marker(
+                [-3.8009513, -38.586656],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_38ff75c7f2f81ce138e1fc9b0e0914af = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_57b90affb1382d876bc5f4eb59089283 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_b643e1b28b05d0768ff5c053942ae5ea = $(`<div id="html_b643e1b28b05d0768ff5c053942ae5ea" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> COMETA (WALDIR DIOGO)<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_57b90affb1382d876bc5f4eb59089283.setContent(html_b643e1b28b05d0768ff5c053942ae5ea);
+            
+        
+
+        marker_2ce32f6dc97fbc0f8c2b570e1c978db5.bindPopup(popup_57b90affb1382d876bc5f4eb59089283)
+        ;
+
+        
+    
+    
+                marker_2ce32f6dc97fbc0f8c2b570e1c978db5.setIcon(icon_38ff75c7f2f81ce138e1fc9b0e0914af);
+            
+    
+            var marker_9270d538683fb263ca78c81cdaee757e = L.marker(
+                [-3.8546626, -38.6021541],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_8b4c5ab322892f83abcd3755dc08360f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_a928ad1f9ae1200c4a939d92bb5c6fb3 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_8453b3be70ab417e6fc32d417503b251 = $(`<div id="html_8453b3be70ab417e6fc32d417503b251" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - CD<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_a928ad1f9ae1200c4a939d92bb5c6fb3.setContent(html_8453b3be70ab417e6fc32d417503b251);
+            
+        
+
+        marker_9270d538683fb263ca78c81cdaee757e.bindPopup(popup_a928ad1f9ae1200c4a939d92bb5c6fb3)
+        ;
+
+        
+    
+    
+                marker_9270d538683fb263ca78c81cdaee757e.setIcon(icon_8b4c5ab322892f83abcd3755dc08360f);
+            
+    
+            var marker_13b7da0157af46f4b671abebc504647b = L.marker(
+                [-3.7687918, -38.5566308],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_81cd6fa0389b9d16db703df0665dfe54 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f42b903445e4ac8b6cd915d0dae5716b = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_be769f564e784ffeca1785d7cc8825ae = $(`<div id="html_be769f564e784ffeca1785d7cc8825ae" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - MONTESE<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_f42b903445e4ac8b6cd915d0dae5716b.setContent(html_be769f564e784ffeca1785d7cc8825ae);
+            
+        
+
+        marker_13b7da0157af46f4b671abebc504647b.bindPopup(popup_f42b903445e4ac8b6cd915d0dae5716b)
+        ;
+
+        
+    
+    
+                marker_13b7da0157af46f4b671abebc504647b.setIcon(icon_81cd6fa0389b9d16db703df0665dfe54);
+            
+    
+            var marker_7945b0f855106b192491af46c8be816d = L.marker(
+                [-3.7321668, -38.4886676],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_59691d34d08542f592cb3948497a1e0a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_14e0304f7d66eaaf9871cee2adce24c9 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_455f9512fa59f72ec1b4b9880b7c722d = $(`<div id="html_455f9512fa59f72ec1b4b9880b7c722d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - VARJOTA<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_14e0304f7d66eaaf9871cee2adce24c9.setContent(html_455f9512fa59f72ec1b4b9880b7c722d);
+            
+        
+
+        marker_7945b0f855106b192491af46c8be816d.bindPopup(popup_14e0304f7d66eaaf9871cee2adce24c9)
+        ;
+
+        
+    
+    
+                marker_7945b0f855106b192491af46c8be816d.setIcon(icon_59691d34d08542f592cb3948497a1e0a);
+            
+    
+            var marker_e195e51e1eafb7cdafe86f4c83af9dfe = L.marker(
+                [-3.7495167, -38.490536],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_405013297e094682b58c8b317ebc9dbb = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_7ae28be1ba0c653f2e77afb6296e0b02 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_e5517b90d3ca0f3fd4efc2baa05f9b2d = $(`<div id="html_e5517b90d3ca0f3fd4efc2baa05f9b2d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - COCO<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_7ae28be1ba0c653f2e77afb6296e0b02.setContent(html_e5517b90d3ca0f3fd4efc2baa05f9b2d);
+            
+        
+
+        marker_e195e51e1eafb7cdafe86f4c83af9dfe.bindPopup(popup_7ae28be1ba0c653f2e77afb6296e0b02)
+        ;
+
+        
+    
+    
+                marker_e195e51e1eafb7cdafe86f4c83af9dfe.setIcon(icon_405013297e094682b58c8b317ebc9dbb);
+            
+    
+            var marker_bea7da91c10c2a411fdd43cc0c4155c0 = L.marker(
+                [-3.71469089999996, -38.5645304999999],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_e94112bc097df5e77cecfabc45e3d0f4 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_455b741bb175a27666a55dd705cb8764 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5c698b54e7585ecffd2806243b2f740c = $(`<div id="html_5c698b54e7585ecffd2806243b2f740c" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - ALVARO WEYNE<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_455b741bb175a27666a55dd705cb8764.setContent(html_5c698b54e7585ecffd2806243b2f740c);
+            
+        
+
+        marker_bea7da91c10c2a411fdd43cc0c4155c0.bindPopup(popup_455b741bb175a27666a55dd705cb8764)
+        ;
+
+        
+    
+    
+                marker_bea7da91c10c2a411fdd43cc0c4155c0.setIcon(icon_e94112bc097df5e77cecfabc45e3d0f4);
+            
+    
+            var marker_6ace0882c010796e869fd8882b332826 = L.marker(
+                [-3.797637, -38.57033],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_7d2107e9dcb9511a875acc799499eb8b = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1e43daee68b1ef86c87e7750e0e0a18e = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_94b490d6776d6141436a17881d38c35d = $(`<div id="html_94b490d6776d6141436a17881d38c35d" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - MARAPONGA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_1e43daee68b1ef86c87e7750e0e0a18e.setContent(html_94b490d6776d6141436a17881d38c35d);
+            
+        
+
+        marker_6ace0882c010796e869fd8882b332826.bindPopup(popup_1e43daee68b1ef86c87e7750e0e0a18e)
+        ;
+
+        
+    
+    
+                marker_6ace0882c010796e869fd8882b332826.setIcon(icon_7d2107e9dcb9511a875acc799499eb8b);
+            
+    
+            var marker_65e2e3c75ce8b70113f524f7978373bd = L.marker(
+                [-3.79190909999999, -38.5497507],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_693e1c92a39f1efb8f9c25f04dde875f = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_620fe66af3a8bda632080c9d59d6acbb = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_5d469e3e044018629e508b2d9c8d5b88 = $(`<div id="html_5d469e3e044018629e508b2d9c8d5b88" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - ITAPERI<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_620fe66af3a8bda632080c9d59d6acbb.setContent(html_5d469e3e044018629e508b2d9c8d5b88);
+            
+        
+
+        marker_65e2e3c75ce8b70113f524f7978373bd.bindPopup(popup_620fe66af3a8bda632080c9d59d6acbb)
+        ;
+
+        
+    
+    
+                marker_65e2e3c75ce8b70113f524f7978373bd.setIcon(icon_693e1c92a39f1efb8f9c25f04dde875f);
+            
+    
+            var marker_bb5020b866acd2019b7cd255ddf68653 = L.marker(
+                [-3.72505869999999, -38.5509475999999],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_f5fbcbc98fab5e051bfeb38a3397ff56 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ca48c29c2192c235f10817372835f9ec = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_1bdf44b001b0f26601dbab808faa8580 = $(`<div id="html_1bdf44b001b0f26601dbab808faa8580" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - MONTE CASTELO<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_ca48c29c2192c235f10817372835f9ec.setContent(html_1bdf44b001b0f26601dbab808faa8580);
+            
+        
+
+        marker_bb5020b866acd2019b7cd255ddf68653.bindPopup(popup_ca48c29c2192c235f10817372835f9ec)
+        ;
+
+        
+    
+    
+                marker_bb5020b866acd2019b7cd255ddf68653.setIcon(icon_f5fbcbc98fab5e051bfeb38a3397ff56);
+            
+    
+            var marker_d9ec2179c07dc6db79e872e8526103b2 = L.marker(
+                [-3.737422, -38.5517313],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_49e58d15f859e04473243e9d7abba0dd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_82991851e339238e4221d660f6d19547 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_fd162df4b3050100c07ab508462b919e = $(`<div id="html_fd162df4b3050100c07ab508462b919e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - PARQUE ARAXA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_82991851e339238e4221d660f6d19547.setContent(html_fd162df4b3050100c07ab508462b919e);
+            
+        
+
+        marker_d9ec2179c07dc6db79e872e8526103b2.bindPopup(popup_82991851e339238e4221d660f6d19547)
+        ;
+
+        
+    
+    
+                marker_d9ec2179c07dc6db79e872e8526103b2.setIcon(icon_49e58d15f859e04473243e9d7abba0dd);
+            
+    
+            var marker_5b1ccc18a83b84fc3566a47151aeec48 = L.marker(
+                [-3.7703181, -38.4872714],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_f2369741dece49400447487b1c78f5be = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_2eacb34ce7d554453b45428e080528ad = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2f153046c4441f819eb7b51f12ed80bd = $(`<div id="html_2f153046c4441f819eb7b51f12ed80bd" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - GUARARAPES<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_2eacb34ce7d554453b45428e080528ad.setContent(html_2f153046c4441f819eb7b51f12ed80bd);
+            
+        
+
+        marker_5b1ccc18a83b84fc3566a47151aeec48.bindPopup(popup_2eacb34ce7d554453b45428e080528ad)
+        ;
+
+        
+    
+    
+                marker_5b1ccc18a83b84fc3566a47151aeec48.setIcon(icon_f2369741dece49400447487b1c78f5be);
+            
+    
+            var marker_0854d54514e77db0e736552fb597da2f = L.marker(
+                [-3.8704983, -38.4675121],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_d38ac3912037a0485ac6a4fb0df96121 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "orange",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_edfbe16f4fea873fef3ed94f63fe26b7 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_6cfd327690fff2ad9dd4f19794ca90c8 = $(`<div id="html_6cfd327690fff2ad9dd4f19794ca90c8" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - EUSEBIO<br>         <b>Classe:</b> B<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_edfbe16f4fea873fef3ed94f63fe26b7.setContent(html_6cfd327690fff2ad9dd4f19794ca90c8);
+            
+        
+
+        marker_0854d54514e77db0e736552fb597da2f.bindPopup(popup_edfbe16f4fea873fef3ed94f63fe26b7)
+        ;
+
+        
+    
+    
+                marker_0854d54514e77db0e736552fb597da2f.setIcon(icon_d38ac3912037a0485ac6a4fb0df96121);
+            
+    
+            var marker_1f715fb81db0d86509834d4ad78c27e3 = L.marker(
+                [-3.7358277, -38.5013099],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_5d3c12aa108434542de139fdcc336ddd = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_6b00c53050e3c6c2cb8be53dd6762294 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_a57d17e4c5352d5790c32f9fbeb13a67 = $(`<div id="html_a57d17e4c5352d5790c32f9fbeb13a67" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - ALDEOTA<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_6b00c53050e3c6c2cb8be53dd6762294.setContent(html_a57d17e4c5352d5790c32f9fbeb13a67);
+            
+        
+
+        marker_1f715fb81db0d86509834d4ad78c27e3.bindPopup(popup_6b00c53050e3c6c2cb8be53dd6762294)
+        ;
+
+        
+    
+    
+                marker_1f715fb81db0d86509834d4ad78c27e3.setIcon(icon_5d3c12aa108434542de139fdcc336ddd);
+            
+    
+            var marker_c591c212cfa5decc245003f7239d9132 = L.marker(
+                [-3.730295, -38.512375],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_b2d2a7b241c84990798edc7ad9c08850 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_d8df06c76bcfe68f38626ea6b91afa45 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_653f8789f8333d9067670b1e73f829aa = $(`<div id="html_653f8789f8333d9067670b1e73f829aa" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - COSTA BARROS<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_d8df06c76bcfe68f38626ea6b91afa45.setContent(html_653f8789f8333d9067670b1e73f829aa);
+            
+        
+
+        marker_c591c212cfa5decc245003f7239d9132.bindPopup(popup_d8df06c76bcfe68f38626ea6b91afa45)
+        ;
+
+        
+    
+    
+                marker_c591c212cfa5decc245003f7239d9132.setIcon(icon_b2d2a7b241c84990798edc7ad9c08850);
+            
+    
+            var marker_2fcac08330eebb56fb88aa63ccb8a701 = L.marker(
+                [-3.746295, -38.5125923],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_01e16b6113c0556a8c12873b4a2ec288 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_e988ff4f5a40d8612d060a9096969118 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_2dba9212a226bc07a9c0e246ed66ae8e = $(`<div id="html_2dba9212a226bc07a9c0e246ed66ae8e" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - RUI BARBOSA<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_e988ff4f5a40d8612d060a9096969118.setContent(html_2dba9212a226bc07a9c0e246ed66ae8e);
+            
+        
+
+        marker_2fcac08330eebb56fb88aa63ccb8a701.bindPopup(popup_e988ff4f5a40d8612d060a9096969118)
+        ;
+
+        
+    
+    
+                marker_2fcac08330eebb56fb88aa63ccb8a701.setIcon(icon_01e16b6113c0556a8c12873b4a2ec288);
+            
+    
+            var marker_9538f3b060ce0f9591eda6fd8a6d6b65 = L.marker(
+                [-3.7429041, -38.4794315],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_a6126ce8a952cfb97f6aef64745845f3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_f428034dc28559cb5fdcefe02655dbe2 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_e6700d93b60bcf3c363ed1b08890d8c8 = $(`<div id="html_e6700d93b60bcf3c363ed1b08890d8c8" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - SANTOS DUMONT<br>         <b>Classe:</b> A<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_f428034dc28559cb5fdcefe02655dbe2.setContent(html_e6700d93b60bcf3c363ed1b08890d8c8);
+            
+        
+
+        marker_9538f3b060ce0f9591eda6fd8a6d6b65.bindPopup(popup_f428034dc28559cb5fdcefe02655dbe2)
+        ;
+
+        
+    
+    
+                marker_9538f3b060ce0f9591eda6fd8a6d6b65.setIcon(icon_a6126ce8a952cfb97f6aef64745845f3);
+            
+    
+            var marker_57541dcf3cf37be4f610347115b7daa5 = L.marker(
+                [-3.8322624, -38.4923427],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_0244c5591d55b6d5c741c8fb066d9d47 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4f43008b5778a5786541f3a26e49ddee = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_fa4a184ab49c8be34eef9dfb9febb959 = $(`<div id="html_fa4a184ab49c8be34eef9dfb9febb959" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - MESSEJANA<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_4f43008b5778a5786541f3a26e49ddee.setContent(html_fa4a184ab49c8be34eef9dfb9febb959);
+            
+        
+
+        marker_57541dcf3cf37be4f610347115b7daa5.bindPopup(popup_4f43008b5778a5786541f3a26e49ddee)
+        ;
+
+        
+    
+    
+                marker_57541dcf3cf37be4f610347115b7daa5.setIcon(icon_0244c5591d55b6d5c741c8fb066d9d47);
+            
+    
+            var marker_b13e817a2da8abee2a14810f4f84b48a = L.marker(
+                [-3.7929617, -38.4806392],
+                {
+}
+            ).addTo(feature_group_cc405f6f28d280a0c406fdbd63ba6a3d);
+        
+    
+            var icon_a5a0c3f7fe429efe0589ca74bb2c55e7 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "shopping-cart",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_c934d95707a723ed2df8f292ab6ae253 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_66c2e03423c88a273bcaef422d12a5d4 = $(`<div id="html_66c2e03423c88a273bcaef422d12a5d4" style="width: 100.0%; height: 100.0%;">     <div style='font-size:13px'>         <b>Cliente:</b> FRANGOLANDIA - MOLINA CENTER<br>         <b>Classe:</b> C<br>         <b>Tipo Comercial:</b> SUPER REGIONAIS<br>          </div>     </div>`)[0];
+                popup_c934d95707a723ed2df8f292ab6ae253.setContent(html_66c2e03423c88a273bcaef422d12a5d4);
+            
+        
+
+        marker_b13e817a2da8abee2a14810f4f84b48a.bindPopup(popup_c934d95707a723ed2df8f292ab6ae253)
+        ;
+
+        
+    
+    
+                marker_b13e817a2da8abee2a14810f4f84b48a.setIcon(icon_a5a0c3f7fe429efe0589ca74bb2c55e7);
+            
+    
+            var layer_control_edb5e977c871cb1d74bb56c1736e1f59_layers = {
+                base_layers : {
+                    "cartodbpositron" : tile_layer_19de99211c191586ed7a79b7f14225e7,
+                },
+                overlays :  {
+                    "Heatmap (peso por classe \u2014 sua l\u00f3gica)" : heat_map_d9480fd8cf59cf113d8c167213513b3f,
+                    "ATACAREJO NACIONAL (marcadores)" : feature_group_a523be76327c7726a7bba2ea817d3fbc,
+                    "PEQUENOS REGIONAIS (marcadores)" : feature_group_5601b4f0caff17afbcf466fe7c2103d0,
+                    "SUPER NACIONAL (marcadores)" : feature_group_82a7eedad7b8a502565d1b5c612095fd,
+                    "SUPER REGIONAIS (marcadores)" : feature_group_cc405f6f28d280a0c406fdbd63ba6a3d,
+                },
+            };
+            let layer_control_edb5e977c871cb1d74bb56c1736e1f59 = L.control.layers(
+                layer_control_edb5e977c871cb1d74bb56c1736e1f59_layers.base_layers,
+                layer_control_edb5e977c871cb1d74bb56c1736e1f59_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_2f69c08c3385578c3d05935251f3a472);
+
+        
+</script>
+</html>

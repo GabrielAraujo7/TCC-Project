@@ -1,0 +1,39 @@
+Para input :
+Agente de Ia com a Api do Chatgpt
+
+NLP CLASSICO: para identificar  o nicho do produto
+
+
+Cada nicho define:
+
+POIs relevantes (academias, escolas, escritórios, etc.).
+
+Pesos socioeconômicos (classe A/B > whey, C/D/E > fraldas).
+
+Pesos comerciais (farmácia, mercado, academia…).
+
+
+Enriquecimento geográfico
+
+Para cada cliente, consultar Google Places API (ou outra API de mapas):
+
+Academias, escolas, mercados, escritórios, etc.
+
+Distâncias (raios de 300 m, 800 m, 1500 m).
+
+Resultado: features poi_academia_300m, poi_escola_800m, etc.
+
+Ferramenta: Google Maps / Places API.
+
+
+ML: clustering Gaussian Mixture → probabilidades de pertencimento a cada cluster
+
+Scikit-learn → GaussianMixture.
+
+Yellowbrick → visualização de métricas de cluster (silhouette score, elbow method).
+
+Folium → mapa colorido por cluster.
+
+Streamlit
+
+
