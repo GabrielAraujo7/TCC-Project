@@ -165,6 +165,48 @@ def rank_clusters(df_feat: pd.DataFrame, labels: np.ndarray) -> pd.DataFrame:
     agg["ordem"] = np.arange(1, len(agg)+1)
     return agg[["cluster","classe_med","poi_med","score_potencial","ordem"]]
 
+def gerar_regioes_ideais(produto: str, filtros: dict) -> list:
+    """
+    Gera regiões ideais para venda com base no produto e filtros.
+    Retorna lista de tuplas: [(lat, lon, nome_bairro), ...]
+    """
+    # 1. Carregar dados
+    df = pd.read_excel("data/Projeto.xlsx", sheet_name="BASE")
+    df.columns = [normalize_header(c) for c in df.columns]
+
+    # 2. Aplicar filtros
+    if filtros.get("classe"):
+        df = df[df["CLASSE SOCIAL"].isin(filtros["classe"])]
+    if filtros.get("tipo"):
+        df = df[df["TIPO COMERCIAL"] == filtros["tipo"]]
+    if filtros.get("bairro"):
+        df = df[df["BAIRRO"].isin(filtros["bairro"])]
+
+    # 3. Pré-processamento
+    df_feat, num_cols, cat_cols = build_features(df)
+
+    # 4. Pipeline de clustering
+    ct = ColumnTransformer([
+        ("num", StandardScaler(), num_cols),
+        ("cat", OneHotEncoder(handle_unknown="ignore"), cat_cols)
+    ])
+    X = ct.fit_transform(df_feat)
+    km = fit_kmeans(X, n_clusters=5)
+    labels = km.labels_
+
+    # 5. Ranking dos clusters
+    ranking = rank_clusters(df_feat, labels)
+
+    # 6. Selecionar top clusters e retornar coordenadas
+    top_clusters = ranking["cluster"].head(3).tolist()
+    regioes = []
+    for cluster_id in top_clusters:
+        subset = df_feat[labels == cluster_id]
+        for _, row in subset.iterrows():
+            regioes.append((row["LATITUDE"], row["LONGITUDE"], row.get("BAIRRO", "Desconhecido")))
+
+    return regioes[:10]  # retorna até 10 pontos
+
 # =========================
 # MAPA
 # =========================

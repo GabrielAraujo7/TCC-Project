@@ -1,5 +1,8 @@
 import streamlit as st
 import time
+from src.main import processar_requisicao
+from streamlit_folium import st_folium
+from src.nlp import identificar_nicho
 
 st.set_page_config(
     page_title="Smart Sale Fortaleza",
@@ -147,12 +150,20 @@ with col2:
 
     # Placeholder de feedback
     placeholder = st.empty()
-    if enviar:
-        if not produto.strip():
-            placeholder.warning("Você não digitou nada ainda!")
-            time.sleep(2)
-            placeholder.empty()
-        else:
-            placeholder.success(f"Produto digitado: **{produto}**")
-            time.sleep(2)
-            placeholder.empty()
+ 
+   
+if enviar:
+    if not produto.strip():
+        placeholder.warning("Você não digitou nada ainda!")
+    else:
+        filtros = {
+            "classe": classe,
+            "tipo": tipo,
+            "bairro": bairro
+        }
+
+        with st.spinner("Processando..."):
+            nicho, mapa = processar_requisicao(produto, filtros)
+
+        placeholder.success(f"Produto: **{produto}** | Nicho identificado: **{nicho}**")
+        st_folium(mapa, width=800, height=600)

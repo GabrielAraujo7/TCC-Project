@@ -1,6 +1,24 @@
 import pandas as pd
 import folium
 from folium.plugins import HeatMap
+import numpy as np
+
+
+def gerar_mapa(regioes: list):
+    """
+    Recebe lista [(lat, lon, nome)] e retorna um folium.Map.
+    """
+    if not regioes:
+        return folium.Map(location=[-3.7319, -38.5267], zoom_start=12)
+
+    center = [np.mean([r[0] for r in regioes]), np.mean([r[1] for r in regioes])]
+    mapa = folium.Map(location=center, zoom_start=12)
+
+    for lat, lon, nome in regioes:
+        folium.Marker([lat, lon], popup=nome, icon=folium.Icon(color="green")).add_to(mapa)
+
+    return mapa
+
 
 file_path = "Projeto.xlsx"
 df = pd.read_excel(file_path, sheet_name="BASE")
